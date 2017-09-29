@@ -49,4 +49,5 @@ def request_data_from_google_places(place_id):
     print Tuesday
 
 request_data_from_google_places('ChIJMZnCJCJ-j4ARN5S_0ANESiM')
+request_data_from_google_places('ChIJlx0LN6-AhYARRNIyIbXTAWY')
 
