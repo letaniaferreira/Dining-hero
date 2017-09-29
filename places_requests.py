@@ -1,5 +1,8 @@
 import requests
 import os
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 def request_data_from_google_places(place_id):
     """Takes a place_id from googleplaces and returns information about business"""
@@ -21,19 +24,29 @@ def request_data_from_google_places(place_id):
     reviews_dictionary = {1:[], 2:[], 3:[], 4:[], 5:[]}
     reviews = restaurant_info['result'].get('reviews')
     for review in reviews:
-        reviews_dictionary[review['rating']].append(review['text'])
+        author_name = review['author_name']
+        made_up_pass = review['time']
+        reviews_dictionary[review['rating']].extend([author_name, made_up_pass, review['text']])
     place_address = restaurant_info['result'].get('formatted_address')
     place_general_hours = restaurant_info['result'].get('opening_hours')
     place_hours = place_general_hours['weekday_text']
+    for day in place_hours:
+        Monday = place_hours[0]
+        Tuesday = place_hours[1]
+        Wednesday = place_hours[2]
+        Thursday = place_hours[3]
+        Friday = place_hours[4]
 
 
 
-    print "general score: {}".format(place_general_score)
-    print "Name:{}".format(place_name)
-    print "Number_id: {}".format(place_num_id)
-    print "Reviews: {}".format(reviews_dictionary)
-    print "Location:{}".format(place_address)
-    print "Open hours:{}".format(place_hours)
+    print "general_score: {}".format(place_general_score)
+    print "rest_name:{}".format(place_name)
+    print "internal_id: {}".format(place_num_id)
+    print "reviews: {}".format(reviews_dictionary)
+    print "adress:{}".format(place_address)
+    print "open_hours:{}".format(place_hours)
+    print Monday
+    print Tuesday
 
 request_data_from_google_places('ChIJMZnCJCJ-j4ARN5S_0ANESiM')
 

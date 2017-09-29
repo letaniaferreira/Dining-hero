@@ -67,9 +67,11 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer,
                                     primary_key=True,
                                     autoincrement=True)
-    rating = db.Column(db.String(200), nullable=False, unique=True)
+    rating = db.Column(db.Integer, nullable=False, unique=False)
+    review = db.Column(db.String(300), nullable=False, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'))
+
 
     restaurant = db.relationship('Restaurant')
     user = db.relationship('User')
