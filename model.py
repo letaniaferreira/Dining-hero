@@ -89,7 +89,7 @@ def connect_to_db(app):
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dininghero' # I will call this database dininghero
     app.config['SQLALCHEMY_ECHO'] = True # this line will print in the in the terminal
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # this avoids silly error message from track modifications
     db.app = app
     db.init_app(app)
 
