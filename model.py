@@ -1,7 +1,6 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# import psycopg2
 
 app = Flask(__name__)
 
@@ -17,22 +16,21 @@ class Restaurant(db.Model):
                                     primary_key=True,
                                     autoincrement=True)
     external_places_id = db.Column(db.String(30), nullable=False, unique=True)
-    places_general_score = db.Column(db.Float, nullable=False, unique=False)
+    general_score = db.Column(db.Float, nullable=False, unique=False)
     name = db.Column(db.String(30), nullable=False, unique=True)
     internal_places_id = db.Column(db.String(50), nullable=False, unique=True)
-    # places_reviews = db.column(db.String(300???))
     address = db.Column(db.String(100), nullable=False, unique=True)
-    # open_hours = db.column(db.string(300???))
-    rating_id = db.Column(db.Integer, db.ForeignKey('ratings.rating_id'))
+    
 
     rating = db.relationship('Rating')
+    hour = db.relationship('Hour')
 
 
     def __repr__(self):
         """Show information about restaurant."""
 
         return "<Restaurant restaurant_id=%s name=%s  score=%s>" % (
-            self.restaurant_id, self.name, self.places_general_score)
+            self.restaurant_id, self.name, self.general_score)
 
 
 class User(db.Model):
@@ -41,14 +39,13 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer,
-                                    primary_key=True,
-                                    autoincrement=True)
+                        primary_key=True,
+                        autoincrement=True)
     fname = db.Column(db.String(15), nullable=False, unique=False)
-    lname = db.Column(db.String(15), nullable=False, unique=False)
+    lname = db.Column(db.String(15), nullable=True, unique=False)
     email = db.Column(db.String(20), nullable=False, unique=True)
     username = db.Column(db.String(15), nullable=False, unique=True)
     password = db.Column(db.String(15), nullable=False, unique=True)
-    rating_id = db.Column(db.Integer, db.ForeignKey('ratings.rating_id'))
 
     rating = db.relationship('Rating')
 
@@ -67,10 +64,10 @@ class Rating(db.Model):
     rating_id = db.Column(db.Integer,
                                     primary_key=True,
                                     autoincrement=True)
-    rating = db.Column(db.Integer, nullable=False, unique=False)
-    review = db.Column(db.String(300), nullable=False, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'))
+    score = db.Column(db.Integer, nullable=False, unique=False)
+    user_review = db.Column(db.Text, nullable=False, unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
 
 
     restaurant = db.relationship('Restaurant')
@@ -79,7 +76,42 @@ class Rating(db.Model):
     def __repr__(self):
         """Show information about rating."""
 
-        return "<Rating rating_id=%s" % (self.rating_id)
+        return "<Rating rating_id=%s score=%s user_review=%s" % (self.rating_id,
+            self.score, self.user_review)
+
+class Hour(db.Model):
+    """Open_hours info."""
+
+    __tablename__ = "hours"
+
+
+    time = db.Column(db.Integer, nullable=False, unique=False)
+    day = db.Column(db.String(10), nullable=False, unique=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
+    day = db.Column(db.String(10), db.ForeignKey('days.day'), nullable=True)
+
+    restaurant = db.relationship('Restaurant')
+    day = db.relationship('Day')
+
+    def __repr__(self):
+        """Show information about open_hours."""
+
+        return "<Hour time=%s day=%s" % (self.time, self.day)
+
+class Day(db.Model):
+    """Open_days info."""
+
+    __tablename__ = "days"
+
+
+    day = db.Column(db.String(10), primary_key=True, nullable=False, unique=False)
+
+    hour = db.relationship('Hour')
+
+    def __repr__(self):
+        """Show information about open_days."""
+
+        return "<Day day=%s" % (self.day)
 
 #******************************
 #Helper functions
