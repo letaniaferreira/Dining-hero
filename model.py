@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,7 +22,7 @@ class Restaurant(db.Model):
     
 
     rating = db.relationship('Rating')
-    hour = db.relationship('Hour')
+    # hour = db.relationship('Hour')
 
 
     def __repr__(self):
@@ -79,39 +78,42 @@ class Rating(db.Model):
         return "<Rating rating_id=%s score=%s user_review=%s" % (self.rating_id,
             self.score, self.user_review)
 
-class Hour(db.Model):
-    """Open_hours info."""
+# class Hour(db.Model):
+#     """Open_hours info."""
 
-    __tablename__ = "hours"
-
-
-    time = db.Column(db.Integer, nullable=False, unique=False)
-    day = db.Column(db.String(10), nullable=False, unique=False)
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
-    day = db.Column(db.String(10), db.ForeignKey('days.day'), nullable=True)
-
-    restaurant = db.relationship('Restaurant')
-    day = db.relationship('Day')
-
-    def __repr__(self):
-        """Show information about open_hours."""
-
-        return "<Hour time=%s day=%s" % (self.time, self.day)
-
-class Day(db.Model):
-    """Open_days info."""
-
-    __tablename__ = "days"
+#     __tablename__ = "hours"
 
 
-    day = db.Column(db.String(10), primary_key=True, nullable=False, unique=False)
+#     open_time = db.Column(db.String(10), nullable=False, unique=False)
+#     closing_time = db.Column(db.String(10), nullable=False, unique=False)
+#     additional_hours = db.Column(db.String(15), nullable=True, unique=False)
+#     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
+#     day = db.Column(db.String(10), db.ForeignKey('days.day'), nullable=True)
 
-    hour = db.relationship('Hour')
+#     restaurant = db.relationship('Restaurant')
+#     day = db.relationship('Day')
 
-    def __repr__(self):
-        """Show information about open_days."""
+#     def __repr__(self):
+#         """Show information about open_hours."""
 
-        return "<Day day=%s" % (self.day)
+#         return "<Hour open_time=%s closing_time=%s day=%s" % (self.open_time, self.closing_time, self.day)
+
+
+# class Day(db.Model):
+#     """Open_days info."""
+
+#     __tablename__ = "days"
+
+
+#     day = db.Column(db.String(10), primary_key=True, nullable=False, unique=False)
+
+#     hour = db.relationship('Hour')
+
+#     def __repr__(self):
+#         """Show information about open_days."""
+
+#         return "<Day day=%s" % (self.day)
+
 
 #******************************
 #Helper functions

@@ -1,106 +1,110 @@
-# from sqlalchemy import func
-# from model import User
-# from model import Rating
-# from model import Restaurant
-# from model import connect_to_db, db
-# from server import app
-import ast
+from sqlalchemy import func
+from model import User
+from model import Rating
+from model import Restaurant
+# from model import Day
+# from model import Hour
+from model import connect_to_db, db
+from server import app
+import json
 
-# def load_restaurants():
-#     """Load restaurants from file into database."""
+def open_file(file):
 
-#     print "Restaurants"
+    with open(file, 'r') as file:
+        data = file.read()
+        data = json.loads(data)
 
-#     # Delete all rows in table, so if we need to run this a second time,
-#     # we won't be trying to add duplicate users
-#     Restaurant.query.delete()
+    return data
 
-#     for row in open("data_3_restaurants.txt"):
-#         # if not row.startswith('#') and not row.strip() == "":
-#         row = row.rstrip().split("|")
-        
-#         external_places_id = row[0]
-#         general_score = row[1]
-#         name = row[2]
-#         internal_places_id = row[3]
-#         address = row[5]
+def load_restaurants(data):
+    """Load restaurants from file into database."""
 
+    print "Restaurants"
 
-#         restaurant = Restaurant(external_places_id=external_places_id,
-#                                 general_score=general_score,
-#                                 name=name,
-#                                 internal_places_id=internal_places_id,
-#                                 address=address)
+    # Delete all rows in table, so if we need to run this a second time,
+    # we won't be trying to add duplicate users
+    Restaurant.query.delete()
 
-#         # We need to add to the session or it won't ever be stored
-#         db.session.add(restaurant)
+    for restaurant_info in data:
+        external_places_id = restaurant_info[0]
+        restaurant_id = restaurant_info[1]
+        general_score = restaurant_info[2]
+        name = restaurant_info[3]
+        internal_places_id = restaurant_info[4]
+        address = restaurant_info[6]
 
-#     # Once we're done, we should commit our work
-#     db.session.commit()
+        restaurant = Restaurant(external_places_id=external_places_id,
+                                general_score=general_score,
+                                name=name,
+                                internal_places_id=internal_places_id,
+                                address=address,
+                                restaurant_id=restaurant_id)
 
-# def load_users():
-#     """Load users from file into database."""
+        # We need to add to the session or it won't ever be stored
+        db.session.add(restaurant)
 
-#     print "Users"
+        # Once we're done, we should commit our work
+        db.session.commit()
 
-#     User.query.delete()
+def load_users(data):
+    """Load users from file into database."""
 
-#     for row in open("data_3_restaurants.txt"):
-#         if not row.startswith('#') and not row.strip() == "":
-#             row = row.rstrip().split("|")
-#             reviews = row[4]
-#             reviews_dictionary = ast.literal_eval(reviews) #serialization - converting types to raw format
-#             for key, value in reviews_dictionary.items():
-#                 if reviews_dictionary[key] != []:
-#                     user_information = reviews_dictionary[key]
-#                     for user_info in user_information:
-#                         user_id = user_info['user_id']
-#                         password = user_info['password']
-#                         full_name = user_info['name']
-#                         for name in full_name:
-#                             fname, second_name = full_name.split(" ")
-#                             lname = second_name[0]
-#                             username = fname + lname
-#                             email = fname + "@gmail.com"
+    print "Users"
 
+    User.query.delete()
 
-#                         user = User(fname=fname,
-#                                     lname=lname,
-#                                     email=email,
-#                                     username=username,
-#                                     password=password,
-#                                     user_id=user_id)
+    for restaurant_info in data:
+        reviews_dictionary = restaurant_info[5]
+        for key, value in reviews_dictionary.items():
+            if reviews_dictionary[key] != []:
+                user_information = reviews_dictionary[key]
+                user_id = 100
+                for user_info in user_information:
+                    user_id += 1
+                    password = user_info['password']
+                    full_name = user_info['name']
+                    for name in full_name:
+                        fname = full_name[:5]
+                        lname = full_name[0]
+                        username = fname + lname
+                        email = fname + "@gmail.com"
 
-#                         db.session.add(user)
-#     db.session.commit()    
+                user = User(fname=fname,
+                            lname=lname,
+                            email=email,
+                            username=username,
+                            password=password,
+                            user_id=user_id)
 
-# def load_ratings():
-#     """Load ratings from file into database."""
+                db.session.add(user)
 
-#     print "Ratings"
+                db.session.commit()    
 
-#     Rating.query.delete()
+def load_ratings(data):
+    """Load ratings from data file into database."""
 
-#     for row in open("data_3_restaurants.txt"):
-#         if not row.startswith('#') and not row.strip() == "":
-#             row = row.rstrip().split("|")
-#             reviews = row[4]
-#             reviews_dictionary = ast.literal_eval(reviews) 
-#             for key, value in reviews_dictionary.items():
-#                 if reviews_dictionary[key] != []:
-#                     user_information = reviews_dictionary[key]
-#                     score = key
-#                     for user_info in user_information:
-#                         user_review = user_info['user_review']
+    print "Ratings"
 
-#                         rating = Rating(user_review=user_review,
-#                                         score=score)
+    Rating.query.delete()
 
-#                         db.session.add(rating)
-#     db.session.commit()
+    for restaurant_info in data:
+        reviews_dictionary = restaurant_info[5] 
+        for key, value in reviews_dictionary.items():
+            if reviews_dictionary[key] != []:
+                user_information = reviews_dictionary[key]
+                score = key
+                for user_info in user_information:
+                    user_review = user_info['user_review']
+                    
+                    rating = Rating(user_review=user_review,
+                                    score=score)
 
-# def load_days():
-#     """Load restaurants from file into database."""
+                    db.session.add(rating)
+
+                    db.session.commit()
+
+# def load_days(data):
+#     """Load days data into database."""
 
 #     print "Days"
 
@@ -108,31 +112,79 @@ import ast
 #     # we won't be trying to add duplicate users
 #     Day.query.delete()
 
-    for row in open("data_3_restaurants.txt"):
-        # if not row.startswith('#') and not row.strip() == "":
-        row = row.rstrip().split("|")
-        
-        day_and_time = row[6]
-        print day_and_time[0]
-        
+#     for restaurant_info in data:
+#         day_and_time = restaurant_info[7]
+#         if day_and_time != None:
+#             for week_day in day_and_time:
+#                 days = week_day.split(':')
+#                 day = days[0]
+#                 print day
 
-#         day = Day(day=day)
+#                 day = Day(day=day)
 
-#         # We need to add to the session or it won't ever be stored
-#         db.session.add(day)
+#                 # We need to add to the session or it won't ever be stored
+#                 db.session.add(day)
 
-#     # Once we're done, we should commit our work
+#                 # Once we're done, we should commit our work
+#                 db.session.commit()
+
+# def load_hours(data):
+#     """Load hours data into database."""
+
+#     print "Hours"
+
+#     # Delete all rows in table, so if we need to run this a second time,
+#     # we won't be trying to add duplicate users
+#     Hour.query.delete()
+
+#     for restaurant_info in data:
+#         day_and_time = restaurant_info[7]
+#         if day_and_time != None:
+#             for day in day_and_time:
+#                 days = day.split(':')
+#                 week_day = days[0]
+#                 if len(days) > 2:
+#                     open_time = days[1] + ":" + days[2][:5]
+#                     closing_time = days[2][-2:] + ":" + days[3][:-3]
+#                     if len(days) > 4:
+#                         additional_hours = days[3][-1:] + ":" + days[4] + ":" + days[5]
+
+
+#                     hour = Hour(open_time=open_time, 
+#                                 closing_time=closing_time, 
+#                                 additional_hours=additional_hours)
+
+#                     # We need to add to the session or it won't ever be stored
+#                     db.session.add(hour)
+
+#                     # Once we're done, we should commit our work
+#                     db.session.commit()
+
+
+# def set_val_user_id():
+#     """Set value for the next user_id after seeding database"""
+
+#     # Get the Max user_id in the database
+#     result = db.session.query(func.max(User.user_id)).one()
+#     max_id = int(result[0])
+
+#     # Set the value for the next user_id to be max_id + 1
+#     query = "SELECT setval('users_user_id_seq', :new_id)"
+#     db.session.execute(query, {'new_id': max_id + 1})
 #     db.session.commit()
 
 
-# if __name__=='__main__':
-#     connect_to_db(app)
+if __name__=='__main__':
+    connect_to_db(app)
 
-#     #if table have not been created, create them
-#     db.create_all()
+    #if table have not been created, create them
+    db.create_all()
 
-#     #calling the functions
-#     load_restaurants()
-#     load_users()
-#     load_ratings()
-#     load_days()
+# calling the functions
+    data_file = open_file('data_10_rest_json.txt')
+    load_restaurants(data_file)
+    load_users(data_file)
+    load_ratings(data_file)
+    # load_hours(data_file)
+    # load_days(data_file)
+    # set_val_user_id()

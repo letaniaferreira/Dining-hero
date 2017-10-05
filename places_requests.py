@@ -1,6 +1,7 @@
 import requests
 import os
 import sys
+import json
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -27,22 +28,45 @@ def request_data_from_google_places(place_id):
         author_name = review['author_name']
         made_up_pass = review['time']
         text_review = review['text']
-        reviews_dictionary[review['rating']].append({'name':author_name, 'password':made_up_pass, 'user_review':text_review})
+        reviews_dictionary[review['rating']].append({'user_id':'x', 'name':author_name, 'password':made_up_pass, 'user_review':text_review})
 
     place_address = restaurant_info['result'].get('formatted_address')
 
-    place_general_hours = restaurant_info['result'].get('opening_hours')
+    restaurant_id = 'x'
 
-    place_hours = place_general_hours['weekday_text']
-    
+    place_general_hours = restaurant_info['result'].get('opening_hours', None)
 
-    return [place_id, place_general_score, place_name, place_num_id, reviews_dictionary, place_address, place_hours]
+    if place_general_hours != None:
+        place_hours = place_general_hours['weekday_text']
+    else:
+        place_hours = None
+
+    return [place_id, restaurant_id, place_general_score, place_name, place_num_id, reviews_dictionary, place_address, place_hours]
 
 general_results = request_data_from_google_places('ChIJiwOc1iJ-j4ARmtSY2tM29G0')
 
 
+def save_requests_results():
+    """Saves requests results."""
+
+    places_id_list = ['ChIJNTBFxKyAhYARXPtpITIjvIQ', 'ChIJx1ULhNCAhYARSRq9NDWTeqI', 'ChIJxSa9TqKAhYAR4lqep-kTo8c', 'ChIJMZnCJCJ-j4ARN5S_0ANESiM', 'ChIJiwOc1iJ-j4ARmtSY2tM29G0', 'ChIJVVWVjGaAhYARH_4JjCTVBz8', 'ChIJYykKebmAhYAR0f6JEcUdIVs', 'ChIJU8wGk6aAhYARW4WqEGx2HNE', 'ChIJqzfjw6aAhYARyCQ9qVcoIU0', 'ChIJ30-kn0F-j4ARM4P0RtSVENA']
+
+    list_of_API_results = []
+
+    for places_id in places_id_list:
+        list_of_API_results.append(request_data_from_google_places(places_id))
+
+    return json.dumps(list_of_API_results)
+
+data_10_restaurants = save_requests_results()
 
 
+def write_results_to_file(file):
+    """Writes requests result to file."""
 
+    with open(file, 'w') as file:
+        file.write(data_10_restaurants)
+
+rest_file = write_results_to_file('data_10_rest_json.txt')
 
 
