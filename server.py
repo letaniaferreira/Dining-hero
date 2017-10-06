@@ -1,7 +1,14 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, session, flash
 
+from jinja2 import StrictUndefined
+
+from flask_debugtoolbar import DebugToolbarExtension
+
+from model import User, Rating, Restaurant, Day, Hour, connect_to_db, db
 
 app = Flask(__name__)
+
+app.secret_key = "ABC"
 
 @app.route('/')
 def main_page():
@@ -32,16 +39,32 @@ def show_login():
 
     return render_template('login.html')
 
+@app.route('/login')
+def login_form():
+    """Shows login form."""
+
+    return render_template('login.html')
+
 
 @app.route('/login', methods=['Post'])
 def login():
     """Alows user to login"""
 
-    username = request.form['username']
-    password = request.form['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-    # session['username'] = password
-    return render_template('login.html')
+    user = db.session.query(User).filter_by(email=email).first()
+
+
+    if user and password == user.password:
+
+        session['email'] = email
+        flash("Login sucessful!")
+        return render_template('advanced_search.html')
+    else:
+        flash("Login failed. Incorrect email or password.")
+        return redirect('/login')
+
 
 @app.route('/results')
 def results():
@@ -50,4 +73,11 @@ def results():
     return render_template('results.html')
 
 if __name__ == "__main__":
+
+    app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
+
+    connect_to_db(app)
+
+    # Use the DebugToolbar
+    DebugToolbarExtension(app)
     app.run(debug=True)
