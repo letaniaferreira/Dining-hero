@@ -16,7 +16,8 @@ app.secret_key = "ABC" # you always need to give your app a secrete key. No matt
 app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
-def main_page():
+#need this showing page to not get conflict with the get form
+def main_page(): 
     """Homepage"""
 
     return render_template('main_page.html')
@@ -30,7 +31,7 @@ def quick_search():
     food_category = db.session.query(Category).filter_by(specialty=food_type).all()
    
     if food_category:
-        return render_template('results.html')
+        return redirect('/results')
 
     else:
         flash("Ops! Couldn't find that. Please try something else!")
@@ -89,7 +90,9 @@ def login():
 def results():
     """shows users restaurant suggestion"""
 
-    return render_template('results.html')
+    restaurant = Restaurant.query.order_by('restaurant_id').first()
+
+    return render_template('results.html', restaurant=restaurant)
 
 if __name__ == "__main__":
 
