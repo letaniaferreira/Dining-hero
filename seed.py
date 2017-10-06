@@ -53,27 +53,26 @@ def load_restaurants(data):
 
         # Once we're done, we should commit our work
         db.session.commit()
+
+
 def load_categories(data):
     """Load categories from file into database."""
 
     print "Categories"
 
-    # # Delete all rows in table, so if we need to run this a second time,
-    # # we won't be trying to add duplicate users
     Category.query.delete()
 
     for restaurant_info in data:
         restaurant_id = restaurant_info[1]
         special_features = restaurant_info[8]
         for special in special_features:
+#there is repetition in the categories as of right now, but categories have been added
 
             category = Category(specialty=special,
                                 restaurant_id=restaurant_id)
 
-            # We need to add to the session or it won't ever be stored
             db.session.add(category) 
 
-        # Once we're done, we should commit our work
         db.session.commit()
 
 
