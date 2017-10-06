@@ -19,10 +19,11 @@ class Restaurant(db.Model):
     name = db.Column(db.String(30), nullable=False, unique=True)
     internal_places_id = db.Column(db.String(50), nullable=False, unique=True)
     address = db.Column(db.String(100), nullable=False, unique=True)
-    
 
+    category = db.relationship('Category')
     rating = db.relationship('Rating')
     hour = db.relationship('Hour')
+
 
 
     def __repr__(self):
@@ -31,6 +32,23 @@ class Restaurant(db.Model):
         return "<Restaurant restaurant_id=%s name=%s  score=%s>" % (
             self.restaurant_id, self.name, self.general_score)
 
+class Category(db.Model):
+    """Restaurant category info."""
+
+    __tablename__ = "categories"
+
+    category_id = db.Column(db.Integer,
+                                    primary_key=True,
+                                    autoincrement=True)
+    specialty = db.Column(db.String, nullable=True, unique=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
+
+
+    def __repr__(self):
+        """Show information about restaurant."""
+
+        return "<Category category_id=%s specialty=%s>" % (
+            self.category_id, self.specialty)
 
 class User(db.Model):
     """User info."""

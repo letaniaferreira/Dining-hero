@@ -2,11 +2,19 @@ from sqlalchemy import func
 from model import User
 from model import Rating
 from model import Restaurant
+from model import Category
 from model import Day
 from model import Hour
 from model import connect_to_db, db
 from server import app
 import json
+
+from sqlalchemy.schema import DropTable
+from sqlalchemy.ext.compiler import compiles
+
+@compiles(DropTable, "postgresql")
+def _compile_drop_table(element, compiler, **kwargs):
+    return compiler.visit_drop_table(element) + " CASCADE"
 
 def open_file(file):
 
@@ -45,6 +53,29 @@ def load_restaurants(data):
 
         # Once we're done, we should commit our work
         db.session.commit()
+def load_categories(data):
+    """Load categories from file into database."""
+
+    print "Categories"
+
+    # # Delete all rows in table, so if we need to run this a second time,
+    # # we won't be trying to add duplicate users
+    Category.query.delete()
+
+    for restaurant_info in data:
+        restaurant_id = restaurant_info[1]
+        special_features = restaurant_info[8]
+        for special in special_features:
+
+            category = Category(specialty=special,
+                                restaurant_id=restaurant_id)
+
+            # We need to add to the session or it won't ever be stored
+            db.session.add(category) 
+
+        # Once we're done, we should commit our work
+        db.session.commit()
+
 
 def load_users(data):
     """Load users from file into database."""
@@ -185,9 +216,10 @@ if __name__=='__main__':
     #if table have not been created, create them
     db.create_all()
 
-# calling the functions
+# # calling the functions
     data_file = open_file('data_10_rest_json.txt')
     load_restaurants(data_file)
+    load_categories(data_file)
     load_users(data_file)
     load_ratings(data_file)
     load_days(data_file)
