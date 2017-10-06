@@ -4,11 +4,11 @@ from jinja2 import StrictUndefined
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import User, Rating, Restaurant, Day, Hour, connect_to_db, db
+from model import User, Rating, Restaurant, Day, Hour, Category, connect_to_db, db
 
 app = Flask(__name__)
 
-app.secret_key = "ABC"
+app.secret_key = "ABC" # you always need to give your app a secrete key. No matter what key it is 
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -17,11 +17,25 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def main_page():
-    """Allows user to do basic search"""
-
-    food_type = request.args.get('type_of_food')
+    """Homepage"""
 
     return render_template('main_page.html')
+
+@app.route('/search')
+def quick_search():
+    """Allows user to do basic search"""
+   
+    food_type = request.args.get('type_of_food')
+
+    food_category = db.session.query(Category).filter_by(specialty=food_type).all()
+   
+    if food_category:
+        return render_template('results.html')
+
+    else:
+        flash("Ops! Couldn't find that. Please try something else!")
+        return redirect('/')
+
 
 @app.route('/advanced_search')
 def user_form():
@@ -86,4 +100,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
     
-    app.run(debug=True)
+    app.run(debug=True) # the app.run should be the last thing on your app in order to not cause conflicts
