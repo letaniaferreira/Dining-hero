@@ -27,16 +27,28 @@ def quick_search():
     """Allows user to do basic search"""
    
     food_type = request.args.get('type_of_food')
+    print food_type
 
     food_category = db.session.query(Category).filter_by(specialty=food_type).all()
-   
-    if food_category:
+    #[<Category category_id=20 specialty=Vietnamese>, <Category category_id=37 specialty=Vietnamese>]
+
+    # for option in food_category:
+    #     print "above food_category"
+    #     print option
+    #     print type(option) # class
+    #     print "below food_category"
+    if food_category: # as it is always returns restaurant which id is 1
         return redirect('/results')
 
     else:
         flash("Ops! Couldn't find that. Please try something else!")
         return redirect('/')
 
+@app.route('/advanced_search_form')
+def shows_user_form():
+    """Allows user to perform advanced search"""
+
+    return render_template('advanced_search.html')
 
 @app.route('/advanced_search')
 def user_form():
@@ -45,13 +57,11 @@ def user_form():
     desired_location = request.args.get('chosen_location')
 
     if desired_location == "haight":
-        print "I work"
 
     # add other request forms here
-
-    #verify return route - why is it going back to main_page?
-
-    return render_template('advanced_search.html')
+    
+    # either change /results to advanced_results or make sure the results refresh
+        return redirect('/results')
 
 @app.route('/show-login', methods=['GET'])
 def show_login():
