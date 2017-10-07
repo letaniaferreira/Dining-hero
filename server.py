@@ -22,27 +22,6 @@ def main_page():
 
     return render_template('main_page.html')
 
-@app.route('/search')
-def quick_search():
-    """Allows user to do basic search"""
-   
-    food_type = request.args.get('type_of_food')
-    print food_type
-
-    food_category = db.session.query(Category).filter_by(specialty=food_type).all()
-    #[<Category category_id=20 specialty=Vietnamese>, <Category category_id=37 specialty=Vietnamese>]
-
-    # for option in food_category:
-    #     print "above food_category"
-    #     print option
-    #     print type(option) # class
-    #     print "below food_category"
-    if food_category: # as it is always returns restaurant which id is 1
-        return redirect('/results')
-
-    else:
-        flash("Ops! Couldn't find that. Please try something else!")
-        return redirect('/')
 
 @app.route('/advanced_search_form')
 def shows_user_form():
@@ -61,7 +40,7 @@ def user_form():
     # add other request forms here
     
     # either change /results to advanced_results or make sure the results refresh
-        return redirect('/results')
+        return render_template('advanced_results.html') # need to create thi html
 
 @app.route('/show-login', methods=['GET'])
 def show_login():
@@ -99,10 +78,24 @@ def login():
 @app.route('/results')
 def results():
     """shows users restaurant suggestion"""
+    
+    food_type = request.args.get('type_of_food')
 
-    restaurant = Restaurant.query.order_by('restaurant_id').first()
+    
+    list_food_categories = db.session.query(Category).filter_by(specialty=food_type).all()
 
-    return render_template('results.html', restaurant=restaurant)
+    if list_food_categories:
+        restaurants = []
+        for category in list_food_categories:
+            rest_id = category.restaurant_id
+            restaurants.append(Restaurant.query.get(rest_id))
+
+
+        return render_template('results.html', restaurants=restaurants)
+
+    else:
+        flash("Ops! Couldn't find that. Please try something else!")
+        return redirect('/')
 
 if __name__ == "__main__":
 
