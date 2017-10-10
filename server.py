@@ -35,12 +35,45 @@ def user_form():
 
     desired_location = request.args.get('chosen_location')
 
-    if desired_location == "haight":
 
-    # add other request forms here
+      
+    simple = request.args.get('sophistication')
+    traditional = request.args.get('traditional') # no traditional/fusion added to current database
+    brunch = request.args.get('brunch')
+    outside = request.args.get('outside') # no outside added to current database
+    tablecloth = request.args.get('tablecloth')
+    ambience = request.args.get('ambience') # no ambience/decoration added to current database
+
+    list_food_categories = []
+    list_food_simple = db.session.query(Category).filter_by(specialty=simple).all()
+    list_food_categories.extend(list_food_simple)
+    list_food_brunch = db.session.query(Category).filter_by(specialty=brunch).all()
+    list_food_categories.extend(list_food_brunch)
+    list_food_outside = db.session.query(Category).filter_by(specialty=outside).all()
+    list_food_categories.extend(list_food_outside)
+    list_food_tablecloth = db.session.query(Category).filter_by(specialty=tablecloth).all()
+    list_food_categories.extend(list_food_tablecloth)
+    list_food_ambience = db.session.query(Category).filter_by(specialty=ambience).all()
+    list_food_categories.extend(list_food_ambience)
+    list_food_traditional = db.session.query(Category).filter_by(specialty=traditional).all()
+    list_food_categories.extend(list_food_traditional) 
+  
+
+    if list_food_categories:
+        restaurants = []
+        for category in list_food_categories:
+            rest_id = category.restaurant_id
+            restaurants.append(Restaurant.query.get(rest_id)) # appends the id of the rest
+
+
+        return render_template('advanced_results.html', restaurants=restaurants)
+
+    else:
+        flash("Ops! Couldn't find that. Please try something else!")
+        return redirect('/')
     
     # either change /results to advanced_results or make sure the results refresh
-        return render_template('advanced_results.html') # need to create thi html
+        # return render_template('advanced_results.html') # need to create thi html
 
 @app.route('/show-login', methods=['GET'])
 def show_login():
