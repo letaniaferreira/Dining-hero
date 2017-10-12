@@ -1,22 +1,25 @@
 from sqlalchemy import func
-from model import User
-from model import Rating
-from model import Restaurant
-from model import Category
-from model import Day
-from model import Hour
-from model import connect_to_db, db
+from model import User, Rating, Restaurant, Category, Day, Hour, connect_to_db
+# from model import Rating
+# from model import Restaurant
+# from model import Category
+# from model import Day
+# from model import Hour
+# from model import connect_to_db, db
 from server import app
 import json
 
 from sqlalchemy.schema import DropTable
-from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.ext.compiler import compiles # allows to run the compile_drop_table function
 
 @compiles(DropTable, "postgresql")
 def _compile_drop_table(element, compiler, **kwargs):
+    """drops tables in a PostgreSQL database that have
+    foreign key constraints and require DROP TABLE CASCADE"""
     return compiler.visit_drop_table(element) + " CASCADE"
 
 def open_file(file):
+    """read data from file and makes it json"""
 
     with open(file, 'r') as file:
         data = file.read()
@@ -212,6 +215,7 @@ if __name__=='__main__':
     connect_to_db(app)
 
     db.drop_all()
+    
     #if table have not been created, create them
     db.create_all()
 

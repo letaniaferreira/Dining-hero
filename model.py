@@ -137,12 +137,40 @@ class Day(db.Model):
 
 
 #******************************
+#Testing database
+
+def example_data():
+    """Create some sample data."""
+
+ # In case this is run more than once, empty out existing data
+    Restaurant.query.delete()
+    Category.query.delete()
+    User.query.delete()
+    Rating.query.delete()
+    Hour.query.delete()
+    Day.query.delete()
+
+    # Add sample employees and departments
+
+    spicy = Category(category_id='03', specialty='spicy', restaurant_id='01')
+    fancy = Category(category_id='04', specialty='fancy', restaurant_id='02')
+
+    hippie_thai = Restaurant(restaurant_id='01', external_places_id='places_id', general_score='4.3', name='Hippie Thai', internal_places_id='internal_id', address='123 Haight St.')
+    pettit_creen = Restaurant(restaurant_id='02', external_places_id='places_other_id', general_score='4.7', name='Pettit Creen', internal_places_id='other_internal_id', address='123 Market St.')
+
+    joana = User(fname='Joana', lname='Maria', email='joana@gmail.com', username='joanamaria', password='joanapassword')
+    andre = User(fname='Andre', lname='Falco', email='andre@gmail.com', username='andrefalco', password='andrepassword')
+
+    db.session.add_all([hippie_thai, pettit_creen, spicy, fancy, joana, andre])
+    db.session.commit()
+
+
 #Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///dininghero'):
     """Connect tthe database to the Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dininghero' # I will call this database dininghero
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri # I will call this database, which in this function is defauted to dininghero
     app.config['SQLALCHEMY_ECHO'] = True # this line will print in the in the terminal
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # this avoids silly error message from track modifications
     db.app = app

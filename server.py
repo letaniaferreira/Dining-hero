@@ -43,8 +43,9 @@ def user_form():
     outside = request.args.get('outside') # no outside added to current database
     tablecloth = request.args.get('tablecloth')
     ambience = request.args.get('ambience') # no ambience/decoration added to current database
-
+    
     list_food_categories = []
+   
     list_food_simple = db.session.query(Category).filter_by(specialty=simple).all()
     list_food_categories.extend(list_food_simple)
     list_food_brunch = db.session.query(Category).filter_by(specialty=brunch).all()
@@ -60,6 +61,9 @@ def user_form():
   
 
     if list_food_categories:
+        print "beginning of list of foods"
+        print list_food_categories
+        print "end list of food"
         restaurants = []
         for category in list_food_categories:
             rest_id = category.restaurant_id
@@ -102,7 +106,7 @@ def login():
 
         session['email'] = email
         flash("Login sucessful!")
-        return render_template('advanced_search.html')
+        return render_template('profile.html')
     else:
         flash("Login failed. Incorrect email or password.")
         return redirect('/login')
