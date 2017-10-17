@@ -58,10 +58,10 @@ class User(db.Model):
     user_id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
-    fname = db.Column(db.String(15), nullable=True, unique=False)
+    fname = db.Column(db.String(15), nullable=False, unique=False)
     lname = db.Column(db.String(15), nullable=True, unique=False)
     email = db.Column(db.String(20), nullable=False, unique=False)
-    username = db.Column(db.String(15), nullable=True, unique=True)
+    username = db.Column(db.String(15), nullable=False, unique=True)
     password = db.Column(db.String(15), nullable=False, unique=True)
 
     rating = db.relationship('Rating')

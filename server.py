@@ -161,6 +161,16 @@ def results():
         flash("Ops! Couldn't find that. Please try something else!")
         return redirect('/')
 
+@app.route("/logout")
+def log_out():
+    """Logs the user out"""
+
+    del session['email']
+    flash("You are logged out!")
+
+    return redirect("/")
+    
+
 if __name__ == "__main__":
 
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
