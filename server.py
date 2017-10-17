@@ -97,7 +97,7 @@ def login():
     """Alows user to login"""
 
     email = request.form.get('email')
-    password = request.form.get('password')
+    password = request.form.get("password")
 
     user = db.session.query(User).filter_by(email=email).first()
 
@@ -123,19 +123,21 @@ def confirm_registration():
 
     email = request.form.get("email")
     password = request.form.get("password")
+    fname = request.form.get("fname")
+    username = request.form.get("username")
 
     duplicates = db.session.query(User).filter_by(email=email).all()
 
     if duplicates:
         flash("This email is already registered. Please try again with a different email.")
     else:
-        new_user = User(email=email, password=password)
+        new_user = User(email=email, password=password, fname=fname, username=username)
         db.session.add(new_user)
         db.session.commit()
-        flash("You have been registered. Let's find you something cool!")
+        flash("You have been registered!")
         session['email'] = email
 
-    return redirect("/login")
+    return redirect("/login") # need to redirect to profile
 
 @app.route('/results')
 def results():
