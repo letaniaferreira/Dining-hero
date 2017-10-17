@@ -108,9 +108,34 @@ def login():
         flash("Login sucessful!")
         return render_template('profile.html')
     else:
-        flash("Login failed. Incorrect email or password.")
+        flash("Login failed. We could not find your email or password.")
         return redirect('/login')
 
+@app.route('/registration')
+def registration_form():
+    """show registration form"""
+
+    return render_template("registration_form.html")
+
+@app.route("/registration", methods=["POST"])
+def confirm_registration():
+    """Confirms registration"""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    duplicates = db.session.query(User).filter_by(email=email).all()
+
+    if duplicates:
+        flash("This email is already registered. Please try again with a different email.")
+    else:
+        new_user = User(email=email, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash("You have been registered. Let's find you something cool!")
+        session['email'] = email
+
+    return redirect("/login")
 
 @app.route('/results')
 def results():
