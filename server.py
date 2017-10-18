@@ -191,12 +191,19 @@ def rate_a_restaurant():
         user = User.query.filter_by(email=email).first()
         user_id = user.user_id
         rating = Rating.query.filter(Rating.user_id == user_id, Rating.restaurant_id == restaurant_id).first()
+        if rating:
+            rating.score = score
+            db.session.commit()
+            flash("You changed the rating for " + restaurant.name + " . The new score is " + score + ".")
+            return redirect("/rating_results")
+
+        else:
         
-        rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score, user_review=user_review)
-        db.session.add(rating)
-        db.session.commit()
-        flash("You gave " + score + " stars to " + restaurant.name)
-        return redirect("/rating_results")
+            new_rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score, user_review=user_review)
+            db.session.add(new_rating)
+            db.session.commit()
+            flash("You gave " + score + " stars to " + restaurant.name)
+            return redirect("/rating_results")
 
     except KeyError:
         flash("You need to login in order to add a rating!")
