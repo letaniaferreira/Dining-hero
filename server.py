@@ -175,13 +175,6 @@ def results():
         flash("Ops! Couldn't find that. Please try something else!")
         return redirect('/')
 
-# @app.route("/rating_form", methods=["GET"])
-# def renders_rating_form():
-#     """Renders restaurant rating form"""
-
-#     restaurants = Restaurant.query.order_by('name').all()
-#     return render_template("restaurant_details.html", restaurants=restaurants)
-
 
 @app.route("/rating", methods=["POST"])
 def rate_a_restaurant():
@@ -203,17 +196,18 @@ def rate_a_restaurant():
         db.session.add(rating)
         db.session.commit()
         flash("You gave " + score + " stars to " + restaurant.name)
-        return redirect("/restaurants/" + restaurant_id)
+        return redirect("/rating_results")
 
     except KeyError:
         flash("You need to login in order to add a rating!")
         return redirect("/") # need to see where this goes
 
-# @app.route("/rating_results")
-# def rating_results():
-#     """Show rating results"""
+@app.route("/rating_results")
+def rating_results():
+    """Show rating results"""
 
-#     return render_template("rating_results.html")
+    restaurants = Restaurant.query.order_by('name').all()
+    return render_template("rating_results.html", restaurants=restaurants)
 
 @app.route("/logout")
 def log_out():
