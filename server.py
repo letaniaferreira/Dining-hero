@@ -202,12 +202,18 @@ def rate_a_restaurant():
         rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score, user_review=user_review)
         db.session.add(rating)
         db.session.commit()
-        flash("You gave " + score + "to" + restaurant.name)
-        return redirect("/rating" + restaurant_id)
+        flash("You gave " + score + " stars to " + restaurant.name)
+        return redirect("/restaurants/" + restaurant_id)
 
     except KeyError:
-        flash("You need to login!")
+        flash("You need to login in order to add a rating!")
         return redirect("/") # need to see where this goes
+
+# @app.route("/rating_results")
+# def rating_results():
+#     """Show rating results"""
+
+#     return render_template("rating_results.html")
 
 @app.route("/logout")
 def log_out():
