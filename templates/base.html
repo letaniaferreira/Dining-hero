@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> {% block title %} TITLE GOES HERE {% endblock %}</title>
+</head>
+<body>
+
+    <div class='container'>
+ <ul>
+ {% for message in get_flashed_messages() %}
+ <li>{{ message }}</li>
+ {% endfor %}
+ </ul>    
+        
+    </div>
+
+    <div id="logout">
+
+        <form action="/logout">
+            <input type="submit" value="Logout">
+        </form>
+
+    {% block content %} CONTENT GOES HERE {% endblock %}
+     </div>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="/static/ajax.js"></script>
+
+</body>
+</html>

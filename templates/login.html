@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %} 
+
+<form action='/login' method= "POST">
+<br>
+Enter your information:
+<br>
+<br>
+    
+email: <input type='text' name='email'>
+<br>
+<br>
+password: <input type='password' name='password'>
+<br>
+<br>
+
+<input type='submit' value='submit'>
+
+
+<h3><a href='/registration'>Click here to register</a></h3>
+
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} Results {% endblock %}
+
+{% block content %} 
+
+<h1>Try this place: </h1>
+
+    {% for restaurant in restaurants %}
+
+        <br>
+        {{ restaurant.name }}
+        <br>
+        <br>
+        <br>
+        Rated at: {{ restaurant.general_score }}
+        <br>
+        <br>
+        <br>
+        Restaurant address: {{ restaurant.address }}
+        <br>
+        <br>
+
+        {% for hour in restaurant.hour %}
+        Open hours: {{ hour.open_time}}
+        {% endfor %}
+
+        <br>
+
+    {% endfor %}
+
+{% endblock %}

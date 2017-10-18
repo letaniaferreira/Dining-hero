@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %} Restaurant rating {% endblock %}
+
+{% block content %} 
+
+
+
+
+<h3>Rate this restaurant</h3>
+
+<br>
+
+Restaurant: {{ restaurant.name }}
+
+<br>
+<br>
+
+<form action="/rating" method=POST>
+
+  <input type='radio' name='score' value='5'>5
+  <input type='radio' name='score' value='4'>4
+  <input type='radio' name='score' value='3'>3
+  <input type='radio' name='score' value='2'>2
+  <input type='radio' name='score' value='1'>1
+
+  <br>
+  <br>
+  
+ 
+
+  <input type='submit' />
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <a href = "/restaurants">Back to list of restaurants</a>
+
+
+
+</form>
+
+
+{% endblock %}
