@@ -156,8 +156,14 @@ def confirm_registration():
 @app.route('/profile')
 def show_profile():
     """show user profile"""
+    try:
+        email = session['email']
+        return render_template("profile.html")
 
-    return render_template("profile.html")
+    except KeyError:
+        flash("You need to login in to see your profile!")
+        return redirect('/show-login')
+        
 
 @app.route('/results')
 def results():
@@ -234,10 +240,7 @@ def show_favorite_restaurants():
     email = session['email']
 
     user = User.query.filter_by(email=email).first()
-    # user_id = user.user_id
-    # rating = Rating.query.filter(Rating.user_id == user_id, Rating.restaurant_id == restaurant_id).all()
-    # if not rating:
-        # rated_restaurant = restaurant_id
+  
     rated_restaurants = user.rating 
         
     return render_template("rated_restaurants.html", rated_restaurants=rated_restaurants)
