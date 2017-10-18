@@ -188,6 +188,7 @@ def rate_a_restaurant():
     """Rating for a restaurant"""
 
     restaurant_id = request.form.get("restaurant")
+    user_review = request.form.get("user_review")
     score = request.form.get("score")
     restaurant = Restaurant.query.get(restaurant_id)
 
@@ -197,8 +198,8 @@ def rate_a_restaurant():
         user = User.query.filter_by(email=email).first()
         user_id = user.user_id
         rating = Rating.query.filter(Rating.user_id == user_id, Rating.restaurant_id == restaurant_id).first()
-       
-        rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score)
+        
+        rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score, user_review=user_review)
         db.session.add(rating)
         db.session.commit()
         flash("You gave " + score + "to" + restaurant.name)

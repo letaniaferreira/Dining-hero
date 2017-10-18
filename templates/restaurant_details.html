@@ -18,6 +18,8 @@ Restaurant: {{ restaurant.name }}
 
 <form action="/rating" method=POST>
 
+  <input type="hidden" name="restaurant" value={{ restaurant.restaurant_id }}>
+
   <input type='radio' name='score' value='5'>5
   <input type='radio' name='score' value='4'>4
   <input type='radio' name='score' value='3'>3
@@ -26,20 +28,22 @@ Restaurant: {{ restaurant.name }}
 
   <br>
   <br>
-  
- 
+
+  <textarea rows="4" cols="50" name="user_review">
+ ...</textarea>
+
+  <br>
+  <br>
 
   <input type='submit' />
+</form>
+
+
   <br>
   <br>
   <br>
   <br>
 
   <a href = "/restaurants">Back to list of restaurants</a>
-
-
-
-</form>
-
 
 {% endblock %}
