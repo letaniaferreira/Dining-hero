@@ -120,7 +120,7 @@ def login():
 
         session['email'] = email
         flash("Login sucessful!")
-        return render_template('profile.html')
+        return redirect('/profile')
     else:
         flash("Login failed. We could not find your email or password.")
         return redirect('/login')
@@ -151,7 +151,13 @@ def confirm_registration():
         flash("You have been registered!")
         session['email'] = email
 
-    return render_template('/profile.html') #redirect('/profile') can we render a profile more than once?
+    return redirect('/profile') 
+
+@app.route('/profile')
+def show_profile():
+    """show user profile"""
+
+    return render_template("profile.html")
 
 @app.route('/results')
 def results():
