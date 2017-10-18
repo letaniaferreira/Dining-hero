@@ -22,6 +22,20 @@ def main_page():
 
     return render_template('main_page.html')
 
+@app.route("/restaurants")
+def list_of_restaurants():
+    """Show list of restaurants."""
+
+    restaurants = Restaurant.query.order_by('name').all()
+    return render_template("restaurants.html", restaurants=restaurants)
+
+@app.route("/restaurants/<rest_id>")
+def restaurant_details(rest_id):
+    """Shows each restaurant details."""
+
+    restaurant = Restaurant.query.get(rest_id)
+
+    return render_template("restaurant_details.html", restaurant=restaurant)
 
 @app.route('/advanced_search_form')
 def shows_user_form():
@@ -161,6 +175,39 @@ def results():
         flash("Ops! Couldn't find that. Please try something else!")
         return redirect('/')
 
+# @app.route("/rating_form", methods=["GET"])
+# def renders_rating_form():
+#     """Renders restaurant rating form"""
+
+#     restaurants = Restaurant.query.order_by('name').all()
+#     return render_template("restaurant_details.html", restaurants=restaurants)
+
+
+@app.route("/rating", methods=["POST"])
+def rate_a_restaurant():
+    """Rating for a restaurant"""
+
+    restaurant_id = request.form.get("restaurant")
+    score = request.form.get("score")
+    restaurant = Restaurant.query.get(restaurant_id)
+
+    try:
+        email = session['email']
+
+        user = User.query.filter_by(email=email).first()
+        user_id = user.user_id
+        rating = Rating.query.filter(Rating.user_id == user_id, Rating.restaurant_id == restaurant_id).first()
+       
+        rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score)
+        db.session.add(rating)
+        db.session.commit()
+        flash("You gave " + score + "to" + restaurant.name)
+        return redirect("/rating" + restaurant_id)
+
+    except KeyError:
+        flash("You need to login!")
+        return redirect("/") # need to see where this goes
+
 @app.route("/logout")
 def log_out():
     """Logs the user out"""
@@ -169,7 +216,7 @@ def log_out():
     flash("You are logged out!")
 
     return redirect("/")
-    
+
 
 if __name__ == "__main__":
 
