@@ -151,7 +151,7 @@ def confirm_registration():
         flash("You have been registered!")
         session['email'] = email
 
-    return redirect("/login") # need to redirect to profile
+    return render_template('/profile.html') #redirect('/profile') can we render a profile more than once?
 
 @app.route('/results')
 def results():
@@ -215,6 +215,26 @@ def rating_results():
 
     restaurants = Restaurant.query.order_by('name').all()
     return render_template("rating_results.html", restaurants=restaurants)
+
+
+@app.route("/favorites")
+def show_favorite_restaurants():
+    """Show favorite restaurants"""
+
+    restaurants = Restaurant.query.order_by('restaurant_id').all()
+    for restaurant in restaurants:
+        restaurant_id = restaurant.restaurant_id
+
+    email = session['email']
+
+    user = User.query.filter_by(email=email).first()
+    # user_id = user.user_id
+    # rating = Rating.query.filter(Rating.user_id == user_id, Rating.restaurant_id == restaurant_id).all()
+    # if not rating:
+        # rated_restaurant = restaurant_id
+    rated_restaurants = user.rating 
+        
+    return render_template("rated_restaurants.html", rated_restaurants=rated_restaurants)
 
 @app.route("/logout")
 def log_out():
