@@ -7,10 +7,18 @@
 <h2><a href=/restaurants>Rate a restaurant</a></h2>
 
 <h2>Your favorite spots:</h2>
+    <ul>
+      {% for restaurant in favorite_spots %}
+          <li>
+            <a href="/restaurants/{{ restaurant.restaurant_id }}">
+                {{ restaurant.name }}
+              </a>
+          </li>
+      {% endfor %}
+    </ul>
 
-<h2><a href=/restaurants>Restaurants you have rated</a></h2>
+<h2><a href=/favorites>Restaurants you have rated</a></h2>
 
-<h3><a href='/logout'>Logout</a></h3>
 
 
 

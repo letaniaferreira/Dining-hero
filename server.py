@@ -158,7 +158,19 @@ def show_profile():
     """show user profile"""
     try:
         email = session['email']
-        return render_template("profile.html")
+
+        user = User.query.filter_by(email=email).first()
+      
+        rated_restaurants = user.rating #this is a list
+
+        favorite_spots = []
+
+        for rating in rated_restaurants:
+            if rating.score == 5:
+                if len(favorite_spots) < 6:
+                    favorite_spots.append(rating.restaurant)
+
+        return render_template("profile.html", favorite_spots=favorite_spots)
 
     except KeyError:
         flash("You need to login in to see your profile!")
@@ -241,7 +253,9 @@ def show_favorite_restaurants():
 
     user = User.query.filter_by(email=email).first()
   
-    rated_restaurants = user.rating 
+    rated_restaurants = user.rating #this is a list
+
+
         
     return render_template("rated_restaurants.html", rated_restaurants=rated_restaurants)
 

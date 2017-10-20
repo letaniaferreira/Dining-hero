@@ -20,6 +20,12 @@
             <input type="submit" value="User profile">
         </form>
 
+        {% if "email" in session %} <h3><a href='/logout'>Logout</a></h3>
+        {% else %} <h3><a href='/login'>Login</a></h3>
+        {% endif %}
+
+
+
     {% block content %} CONTENT GOES HERE {% endblock %}
      </div>
 

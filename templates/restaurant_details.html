@@ -7,24 +7,40 @@
 
 
 
-<h3>Rate this restaurant</h3>
-
-<br>
 
 Restaurant: {{ restaurant.name }}
+<br>
+<br>
+<br>
+Rated at: {{ restaurant.general_score }}
+<br>
+<br>
+<br>
+Restaurant address: {{ restaurant.address }}
+<br>
+<br>
+
+{% for hour in restaurant.hour %}
+Open hours: {{ hour.open_time}}
+{% endfor %}
 
 <br>
+<br>
+<br>
+
+<h3>Rate this restaurant</h3>
+
 <br>
 
 <form action="/rating" method=POST>
 
   <input type="hidden" name="restaurant" value={{ restaurant.restaurant_id }}>
 
-  <input type='radio' name='score' value='5'>5
-  <input type='radio' name='score' value='4'>4
-  <input type='radio' name='score' value='3'>3
-  <input type='radio' name='score' value='2'>2
   <input type='radio' name='score' value='1'>1
+  <input type='radio' name='score' value='2'>2
+  <input type='radio' name='score' value='3'>3
+  <input type='radio' name='score' value='4'>4
+  <input type='radio' name='score' value='5'>5
 
   <br>
   <br>
