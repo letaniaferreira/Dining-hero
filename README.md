@@ -16,6 +16,12 @@ Libraries used:
 - NLTK
 - Spacy
 
+API used:
+Google Places
+
+Dataset used:
+Yelp Open Dataset (4,700,000 reviews / 156,000 businesses)
+
 Types of testing:
 - Unit testing
 - Integration testing  
