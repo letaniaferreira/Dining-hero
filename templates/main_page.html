@@ -5,23 +5,48 @@
 
 {% block content %}
 
+<!-- <div class="container">
+    <div class"row">
+        <div class="col-xs-4 text-center"><img src="static/img/rt_file_mignon.jpeg" class="img-responsive center-block"></div>
+        <div class="col-xs-4 text-center"><img src="static/img/rt_berry_dessert.jpeg" class="img-responsive center-block"></div>
+        <div class="col-xs-4 text-center"><img src="static/img/rt_asian_meal.jpeg" class="img-responsive center-block"></div>
+    </div>
+</div>
+<br>
+<br> -->
 
-<h1>What are you in the mood for?</h1>
 
-<form action='/results'>
-    <input type='text' name='type_of_food'>
-    <input type='submit' />
+<div class="container">
+    <div class"row">
+        <div class="col-xs-12 text"></span><h3>What are you in the mood for?</h3>
+        <form action='/results'>
+        <input type='text' name='type_of_food'>
+        <input type='submit' />
 
-</form>
+        </form>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h3><a href='/advanced_search_form'>Wanna a better dining experience?</a></h3>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+<br>
+        <h3><a href='/restaurants'>Try one of these restaurants today</a></h3></div>
+    </div>
+</div>
 <br>
 <br>
 
-<h2><a href='/advanced_search_form'>Wanna a better dining experience?</a></h2>
-<br>
-<br>
-<br>
 
-<h3><a href='/restaurants'>Try one of these restaurants today</a></h3>
+
+
+
 
 
 {% endblock %}

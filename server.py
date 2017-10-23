@@ -271,6 +271,7 @@ def log_out():
 
 if __name__ == "__main__":
 
+    app.debug = True
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
     connect_to_db(app)
@@ -278,4 +279,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
     
-    app.run(debug=True) # the app.run should be the last thing on your app in order to not cause conflicts
+    app.run() # the app.run should be the last thing on your app in order to not cause conflicts
