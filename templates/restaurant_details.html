@@ -35,7 +35,7 @@ Open hours: {{ hour.open_time}}
 <form action="/rating" method=POST>
 
   <input type="hidden" name="restaurant" value={{ restaurant.restaurant_id }}>
-  <div class=details>
+  <div class=numbers>
   <input type='radio' name='score' value='1'>1
   <input type='radio' name='score' value='2'>2
   <input type='radio' name='score' value='3'>3
@@ -44,13 +44,12 @@ Open hours: {{ hour.open_time}}
   </div>
   <br>
   <br>
-
+  <div class='submit'>
   <textarea rows="4" cols="50" name="user_review">
  ...</textarea>
 
   <br>
   <br>
-  <div class='submit'>
   <input type='submit'/>
   </div>
 </form>
