@@ -20,10 +20,10 @@
         Restaurant address: {{ restaurant.address }}
         <br>
         <br>
-
+       <!--  Open hours: 
         {% for hour in restaurant.hour %}
-        Open hours: {{ hour.open_time}}
-        {% endfor %}
+        {{ hour.open_time[0] }} to {{ hour.closing_time[0] }}
+        {% endfor %} -->
 
         <br>
 

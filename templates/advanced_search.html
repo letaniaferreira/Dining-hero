@@ -9,36 +9,42 @@
 <h1>What are you looking for today?</h1>
 
 <form action='/advanced_search'>
+    <div class='submit'>
     <input type='text' name='chosen_location' value='location'>
     <input type='submit' />
+    </div>
 </form>
 <br>
 <br> 
 <form action='/advanced_search'>
-    <input type='radio' name='traditional' value='feature_5'>traditional food
-    <input type='radio' name= 'traditional' value='feature_6'>fusion cuisine
-    <br> 
+    <div class='categories'>
+    <input type='radio' name='traditional' value='feature_5'>Traditional food
+    <br>
+    <br>
+    <input type='radio' name= 'traditional' value='feature_6'>Fusion cuisine 
     <br>
     <br>
     <input type='radio' name='sophistication' value='Simple'>Simple
-    <input type='radio' name= 'sophistication' value='Sophisticated'>Sophisticated
-    <br> 
+    <br>
+    <br>
+    <input type='radio' name= 'sophistication' value='Sophisticated'>Sophisticated 
     <br>
     <br>
     <input type='radio' name='outside' value='Outside seating'>Outside seating
-    <br> 
     <br>
     <br>
     <input type='radio' name='brunch' value='Brunch'>Brunch
-    <br> 
     <br>
     <br>
     <input type='radio' name='tablecloth' value='Tablecloth'>Tablecloth
-    <br> 
     <br>
     <br>
-    <input type='radio' name='ambience'>ambience/decoration
+    <input type='radio' name='ambience'>Ambience/Decoration
+    </div>
+    <div class='submit'>
+    <br>
     <input type='submit' />
+    </div>
 </form>
 
 

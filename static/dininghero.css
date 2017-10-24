@@ -14,4 +14,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.container {
+    background-color: rgba(52, 87, 117, 0.8);
+    color: white;
+}
 
+a:link {
+color: #FFCA33;
+}
+a:visited {
+color: #FFCA33;
+}
+a:hover {
+color: #FFCA33;
+}
+
+.submit {
+  color: black;
+}
+
+.categories {
+  font-size: 17px;
+}
+
+.details {
+  font-size: 17px;
+}

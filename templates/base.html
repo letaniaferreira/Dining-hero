@@ -44,7 +44,7 @@
 
       <ul class="nav navbar-nav navbar-right">
         
-        <li class="nav_text"><a href="#">Favorite spots</a></li>
+        <li class="nav_text"><a href="/favorite_spots">Favorite spots</a></li>
         <li class="nav_text"><a href="/">Main page</a></li>
         <li class="nav_text"><a href="/registration">Registration</a></li>
         <li class="nav_text"><a href="/profile">Profile</a></li>
@@ -58,11 +58,11 @@
 </nav>
 
 
- -->
+
     <div class='container'>
- <ul>
+ <ul style="list-style-type:none">
  {% for message in get_flashed_messages() %}
- <li>{{ message }}</li>
+ <li><h4>{{ message }}</h4></li>
  {% endfor %}
  </ul>    
         

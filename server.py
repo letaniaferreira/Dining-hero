@@ -182,6 +182,7 @@ def results():
     """shows users restaurant suggestion"""
     
     food_type = request.args.get('type_of_food')
+    food_type = food_type.title()
 
     
     list_food_categories = db.session.query(Category).filter_by(specialty=food_type).all()
@@ -259,6 +260,29 @@ def show_favorite_restaurants():
         
     return render_template("rated_restaurants.html", rated_restaurants=rated_restaurants)
 
+@app.route('/favorite_spots')
+def show_restaurants_rated_five():
+    """show user profile"""
+    try:
+        email = session['email']
+
+        user = User.query.filter_by(email=email).first()
+      
+        rated_restaurants = user.rating #this is a list
+
+        favorite_spots = []
+
+        for rating in rated_restaurants:
+            if rating.score == 5:
+                if len(favorite_spots) < 6:
+                    favorite_spots.append(rating.restaurant)
+
+        return render_template("favorite_spots.html", favorite_spots=favorite_spots)
+
+    except KeyError:
+        flash("You need to be logged in to see your favorite spots!")
+        return redirect('/show-login')
+
 @app.route("/logout")
 def log_out():
     """Logs the user out"""
@@ -277,6 +301,6 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
     
     app.run() # the app.run should be the last thing on your app in order to not cause conflicts

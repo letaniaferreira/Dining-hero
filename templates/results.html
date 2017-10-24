@@ -7,8 +7,9 @@
 
 <h1>Try this place: </h1>
 
+    <div class='details'>
     {% for restaurant in restaurants %}
-
+        
         <br>
         {{ restaurant.name }}
         <br>
@@ -23,8 +24,9 @@
         <br>
 
         {% for hour in restaurant.hour %}
-        Open hours: {{ hour.open_time}}
+       <!--  Open hours: {{ hour.open_time}} -->
         {% endfor %}
+        </div>
 
         <br>
 
