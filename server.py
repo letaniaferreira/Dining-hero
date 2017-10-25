@@ -87,7 +87,7 @@ def user_form():
         return render_template('advanced_results.html', restaurants=restaurants)
 
     else:
-        flash("Ops! Couldn't find that. Please try something else!")
+        flash("Oops! Couldn't find that. Please try something else!")
         return redirect('/')
     
     # either change /results to advanced_results or make sure the results refresh
@@ -197,7 +197,7 @@ def results():
         return render_template('results.html', restaurants=restaurants)
 
     else:
-        flash("Ops! Couldn't find that. Please try something else!")
+        flash("Oops! Couldn't find that. Please try something else!")
         return redirect('/')
 
 
