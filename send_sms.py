@@ -9,6 +9,6 @@ client = Client(account_sid, auth_token)
 
 client.messages.create(
     to=os.environ["MY_PHONE_NUMBER"],
-    from_="+12176002053",
-    body="This is my first message using twilio API"
+    from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
+    body="more twilio messages"
     )
