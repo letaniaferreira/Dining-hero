@@ -39,29 +39,33 @@ def send_sms():
 
     message = request.form.get('message')
     
-    try:
-        email = session['email']
+   
+    email = session['email']
 
-        user = User.query.filter_by(email=email).first()
-        user_type = user.user_type
+    user = User.query.filter_by(email=email).first()
+    user_type = user.user_type
+    print user_type
 
-        if user_type == 'admin' or user_type == 'vendor':
-        
-            account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-            auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+    if user_type == 'admin' or user_type == 'vendor':
+    
+        account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
 
-            client = Client(account_sid, auth_token)
+        client = Client(account_sid, auth_token)
 
-            client.messages.create(
-            to=os.environ["MY_PHONE_NUMBER"], #user?
-            from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
-            body= message
-            )
+        client.messages.create(
+        to=os.environ["MY_PHONE_NUMBER"], #user?
+        from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
+        body= message
+        )
 
-            return render_template("sending_messages.html", message=message)
+        flash("Your message was sent")
 
-    except KeyError:
-        flash("You don't have autorization to send promo sms. If if are an admin or a vendor please contact us to request autorization.")
+        # return render_template("messages.html")
+        return redirect("/")
+
+    else:
+        flash("You don't have autorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
         return redirect("/")
 
 
