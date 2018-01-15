@@ -16,9 +16,9 @@ class Restaurant(db.Model):
                                     autoincrement=True)
     external_places_id = db.Column(db.String(30), nullable=False, unique=True)
     general_score = db.Column(db.Float, nullable=False, unique=False)
-    name = db.Column(db.String(30), nullable=False, unique=True)
+    name = db.Column(db.String(30), nullable=False, unique=False)
     internal_places_id = db.Column(db.String(50), nullable=False, unique=True)
-    address = db.Column(db.String(100), nullable=False, unique=True)
+    address = db.Column(db.String(100), nullable=False, unique=False)
 
     category = db.relationship('Category')
     rating = db.relationship('Rating')
@@ -58,20 +58,20 @@ class User(db.Model):
     user_id = db.Column(db.Integer,
                         primary_key=True,
                         autoincrement=True)
-    fname = db.Column(db.String(15), nullable=False, unique=False)
+    fname = db.Column(db.String(15), nullable=True, unique=False)
     lname = db.Column(db.String(15), nullable=True, unique=False)
     email = db.Column(db.String(20), nullable=False, unique=False)
     username = db.Column(db.String(15), nullable=False, unique=True)
     password = db.Column(db.String(15), nullable=False, unique=False)
-    usertype = db.Column(db.String(10), nullable=True, unique=False)
+    user_type = db.Column(db.String(10), nullable=True, unique=False)
 
     rating = db.relationship('Rating')
 
     def __repr__(self):
         """Show information about user."""
 
-        return "<User fname=%s lname=%s  email=%s  usertype=%s>" % (
-            self.fname, self.lname, self.email, self.usertype)
+        return "<User fname=%s lname=%s  email=%s  user_type=%s>" % (
+            self.fname, self.lname, self.email, self.user_type)
 
 
 class Rating(db.Model):
@@ -83,7 +83,7 @@ class Rating(db.Model):
                                     primary_key=True,
                                     autoincrement=True)
     score = db.Column(db.Integer, nullable=False, unique=False)
-    user_review = db.Column(db.Text, nullable=False, unique=True)
+    user_review = db.Column(db.Text, nullable=True, unique=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
 
@@ -105,7 +105,7 @@ class Hour(db.Model):
     hour_id = db.Column(db.Integer,
                                     primary_key=True,
                                     autoincrement=True)
-    open_time = db.Column(db.String(20), nullable=False, unique=False)
+    open_time = db.Column(db.String(20), nullable=True, unique=False)
     closing_time = db.Column(db.String(20), nullable=True, unique=False)
     additional_hours = db.Column(db.String(15), nullable=True, unique=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.restaurant_id'), nullable=True)
@@ -126,7 +126,7 @@ class Day(db.Model):
     __tablename__ = "days"
 
 
-    day = db.Column(db.String(10), primary_key=True, nullable=False, unique=False)
+    day = db.Column(db.String(10), primary_key=True, nullable=True, unique=False)
     
 
     hour = db.relationship('Hour')

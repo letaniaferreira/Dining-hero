@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, render_template, redirect, session, flash
 
 from jinja2 import StrictUndefined
@@ -30,11 +32,6 @@ def vendors_page():
 
     return render_template('vendors.html')
 
-@app.route("/renders_sms")
-def renders_sms():
-    """Renders sms"""
-
-    return render_template('messages.html')
 
 @app.route("/sms", methods=['POST'])
 def send_sms():
@@ -337,6 +334,7 @@ def log_out():
     """Logs the user out"""
 
     del session['email']
+    session.clear()
     flash("You are logged out!")
 
     return redirect("/")

@@ -1,11 +1,5 @@
 from sqlalchemy import func
-from model import User, Rating, Restaurant, Category, Day, Hour, connect_to_db
-# from model import Rating
-# from model import Restaurant
-# from model import Category
-# from model import Day
-# from model import Hour
-# from model import connect_to_db, db
+from model import User, Rating, Restaurant, Category, Day, Hour, connect_to_db, db
 from server import app
 import json
 
@@ -95,6 +89,7 @@ def load_users(data):
                     user_id = user_info['user_id']
                     password = user_info['password']
                     full_name = user_info['name']
+                    user_type = user_info['user_type']
                     for name in full_name:
                         fname = full_name[:5]
                         lname = full_name[0]
@@ -106,7 +101,8 @@ def load_users(data):
                                 lname=lname,
                                 email=email,
                                 username=username,
-                                password=password)
+                                password=password,
+                                user_type=user_type)
 
                     db.session.add(user)
 

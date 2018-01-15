@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Vendors page {% endblock %}
+
+
+{% block content %}
+
+<h3> If you are a restaurant administrator and would like to advertise specials or promotions to our users please fill up the form below to submit a message that will be sent to users that expressed interest in your restaurant. Users will receive a sms via Twilio containing that information</h3>
+
+
+<form action="/sms" method="POST">
+
+  <textarea rows="4" cols="50" name="message">
+ ...</textarea>
+
+  <br>
+  <br>
+  <input type='submit'/>
+
+
+</form>
+
+
+
+
+{% endblock %}

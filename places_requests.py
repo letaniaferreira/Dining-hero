@@ -28,11 +28,11 @@ def request_data_from_google_places(place_id):
         author_name = review['author_name']
         made_up_pass = review['time']
         text_review = review['text']
-        reviews_dictionary[review['rating']].append({'user_id':'x', 'name':author_name, 'password':made_up_pass, 'user_review':text_review})
+        reviews_dictionary[review['rating']].append({'user_id':'!!!user_id!!!!', 'name':author_name, 'password':made_up_pass, 'user_review':text_review, 'user_type': '!!!!usertype!!!!'})
 
     place_address = restaurant_info['result'].get('formatted_address')
 
-    restaurant_id = 'x'
+    restaurant_id = '!!!!rest_id!!!'
 
     place_general_hours = restaurant_info['result'].get('opening_hours', None)
 
@@ -49,7 +49,7 @@ general_results = request_data_from_google_places('ChIJiwOc1iJ-j4ARmtSY2tM29G0')
 def save_requests_results():
     """Saves requests results."""
 
-    places_id_list = ['ChIJNTBFxKyAhYARXPtpITIjvIQ', 'ChIJx1ULhNCAhYARSRq9NDWTeqI', 'ChIJxSa9TqKAhYAR4lqep-kTo8c', 'ChIJMZnCJCJ-j4ARN5S_0ANESiM', 'ChIJiwOc1iJ-j4ARmtSY2tM29G0', 'ChIJVVWVjGaAhYARH_4JjCTVBz8', 'ChIJYykKebmAhYAR0f6JEcUdIVs', 'ChIJU8wGk6aAhYARW4WqEGx2HNE', 'ChIJqzfjw6aAhYARyCQ9qVcoIU0', 'ChIJ30-kn0F-j4ARM4P0RtSVENA']
+    places_id_list = ['ChIJNTBFxKyAhYARXPtpITIjvIQ', 'ChIJx1ULhNCAhYARSRq9NDWTeqI'] #, 'ChIJxSa9TqKAhYAR4lqep-kTo8c', 'ChIJMZnCJCJ-j4ARN5S_0ANESiM', 'ChIJiwOc1iJ-j4ARmtSY2tM29G0', 'ChIJVVWVjGaAhYARH_4JjCTVBz8', 'ChIJYykKebmAhYAR0f6JEcUdIVs', 'ChIJU8wGk6aAhYARW4WqEGx2HNE', 'ChIJqzfjw6aAhYARyCQ9qVcoIU0', 'ChIJ30-kn0F-j4ARM4P0RtSVENA']
 
     list_of_API_results = []
 
