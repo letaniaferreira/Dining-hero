@@ -62,15 +62,16 @@ class User(db.Model):
     lname = db.Column(db.String(15), nullable=True, unique=False)
     email = db.Column(db.String(20), nullable=False, unique=False)
     username = db.Column(db.String(15), nullable=False, unique=True)
-    password = db.Column(db.String(15), nullable=False, unique=True)
+    password = db.Column(db.String(15), nullable=False, unique=False)
+    usertype = db.Column(db.String(10), nullable=True, unique=False)
 
     rating = db.relationship('Rating')
 
     def __repr__(self):
         """Show information about user."""
 
-        return "<User fname=%s lname=%s  email=%s>" % (
-            self.fname, self.lname, self.email)
+        return "<User fname=%s lname=%s  email=%s  usertype=%s>" % (
+            self.fname, self.lname, self.email, self.usertype)
 
 
 class Rating(db.Model):

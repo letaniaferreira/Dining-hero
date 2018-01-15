@@ -4,15 +4,17 @@ from jinja2 import StrictUndefined
 
 from flask_debugtoolbar import DebugToolbarExtension
 
+from twilio.rest import Client
+
 from model import User, Rating, Restaurant, Day, Hour, Category, connect_to_db, db
 
 app = Flask(__name__)
 
 app.secret_key = "ABC" # you always need to give your app a secrete key. No matter what key it is 
 
-# Normally, if you use an undefined variable in Jinja2, it fails
-# silently. This is horrible. Fix this so that, instead, it raises an
-# error.
+# if you use an undefined variable in Jinja2, it fails
+# silently. Adding this line raises an error instead.
+
 app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
@@ -21,6 +23,44 @@ def main_page():
     """Homepage"""
 
     return render_template('main_page.html')
+
+@app.route("/renders_sms")
+def renders_sms():
+    """Renders sms"""
+
+    return render_template('messages.html')
+
+@app.route("/sms", methods=['POST'])
+def send_sms():
+    """Allows admin and vendor to send promo sms."""
+
+    message = request.form.get('message')
+    
+    try:
+        email = session['email']
+
+        user = User.query.filter_by(email=email).first()
+        user_type = user.user_type
+
+        if user_type == 'admin' or user_type == 'vendor':
+        
+            account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+            auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+
+            client = Client(account_sid, auth_token)
+
+            client.messages.create(
+            to=os.environ["MY_PHONE_NUMBER"], #user?
+            from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
+            body= message
+            )
+
+            return render_template("sending_messages.html", message=message)
+
+    except KeyError:
+        flash("You don't have autorization to send promo sms. If if are an admin or a vendor please contact us to request autorization.")
+        return redirect("/")
+
 
 @app.route("/restaurants")
 def list_of_restaurants():
