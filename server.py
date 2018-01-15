@@ -24,6 +24,12 @@ def main_page():
 
     return render_template('main_page.html')
 
+@app.route("/vendors")
+def vendors_page():
+    """Renders information to vendors"""
+
+    return render_template('vendors.html')
+
 @app.route("/renders_sms")
 def renders_sms():
     """Renders sms"""
@@ -159,11 +165,14 @@ def login():
     if user and password == user.password:
 
         session['email'] = email
+        session['user_type'] = user.user_type
         flash("Login sucessful!")
+
         return redirect('/profile')
     else:
         flash("Login failed. We could not find your email or password.")
         return redirect('/login')
+
 
 @app.route('/registration')
 def registration_form():

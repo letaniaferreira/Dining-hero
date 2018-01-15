@@ -45,9 +45,9 @@
       <ul class="nav navbar-nav navbar-right">
         
         <li class="nav_text"><a href="/favorite_spots">Favorite spots</a></li>
-        <li class="nav_text"><a href="/vendors">Vendors</a></li>
         <li class="nav_text"><a href="/registration">Registration</a></li>
         <li class="nav_text"><a href="/profile">Profile</a></li>
+        <li class="nav_text">{% if session.get("user_type") == 'vendor' or session.get("user_type") == 'admin' %}<a href="/vendors">Vendors</a>{% endif %}</li>
         <li class="nav_text">{% if "email" in session %}<a href='/logout'>Logout</a>
         {% else %} <a href='/login'>Login</a>
         {% endif %}</li>
