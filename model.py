@@ -63,6 +63,7 @@ class User(db.Model):
     email = db.Column(db.String(20), nullable=False, unique=False)
     username = db.Column(db.String(15), nullable=False, unique=True)
     password = db.Column(db.String(15), nullable=False, unique=False)
+    phone = db.Column(db.String(12), nullable=True, unique=True)
     user_type = db.Column(db.String(10), nullable=True, unique=False)
 
     rating = db.relationship('Rating')

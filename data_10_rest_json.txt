@@ -65,7 +65,7 @@
          "Saturday: 11:00 AM \u2013 12:00 AM",
          "Sunday: 11:00 AM \u2013 11:00 PM"
       ], 
-      "Thai, Asian, Spicy, Noodles, Soups"
+      ["Thai", "Asian", "Spicy", "Noodles", "Soups"]
    ],
    [  
       "ChIJx1ULhNCAhYARSRq9NDWTeqI",
@@ -132,6 +132,6 @@
          "Saturday: 5:00 \u2013 9:15 PM",
          "Sunday: Closed"
       ],
-      "Table cloth, Fine dining, French, Sophisticated"
+      ["Table cloth", "Fine dining", "French", "Sophisticated"]
    ]
 ]

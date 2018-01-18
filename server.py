@@ -189,13 +189,14 @@ def confirm_registration():
     password = request.form.get("password")
     fname = request.form.get("fname")
     username = request.form.get("username")
+    phone = request.form.get("phone")
 
     duplicates = db.session.query(User).filter_by(email=email).all()
 
     if duplicates:
         flash("This email is already registered. Please try again with a different email.")
     else:
-        new_user = User(email=email, password=password, fname=fname, username=username)
+        new_user = User(email=email, password=password, fname=fname, username=username, phone=phone)
         db.session.add(new_user)
         db.session.commit()
         flash("You have been registered!")
