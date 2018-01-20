@@ -54,14 +54,13 @@ def send_sms():
         client = Client(account_sid, auth_token)
 
         client.messages.create(
-        to=os.environ["MY_PHONE_NUMBER"], #user?
+        to=os.environ["MY_PHONE_NUMBER"], #substitute by list of users when updated from trial Twilio acc
         from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
         body= message
         )
 
         flash("Your message was sent")
 
-        # return render_template("messages.html")
         return redirect("/")
 
     else:
@@ -293,7 +292,7 @@ def rating_results():
     return render_template("rating_results.html", restaurants=restaurants)
 
 
-@app.route("/favorites")
+@app.route("/rated")
 def show_favorite_restaurants():
     """Show favorite restaurants"""
 
