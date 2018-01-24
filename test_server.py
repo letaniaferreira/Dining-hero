@@ -10,17 +10,22 @@ class TestServerIntegration(unittest.TestCase):
     def test_main_page(self):
         client = server.app.test_client()
         result = client.get('/')
-        self.assertIn('<h1>What are you in the mood for?</h1>', result.data)
+        self.assertIn('What are you in the mood for?', result.data)
 
     def test_shows_user_form(self):
         client = server.app.test_client()
         result = client.get('/advanced_search_form')
-        self.assertIn('<h1>What are you looking for today?</h1>', result.data)
+        self.assertIn('What are you looking for today?', result.data)
 
     def test_login_form(self):
         client = server.app.test_client()
         result = client.get('/login')
         self.assertIn('Enter your information:', result.data)
+
+    # def test_show_login(self):
+    # client = server.app.test_client()
+    # result = client.get('/show_login')
+    # self.assertIn('Enter your information:', result.data)
 
 class FlaskTestsDatabase(TestCase):
     """Flask tests that use the database."""
@@ -46,7 +51,9 @@ class FlaskTestsDatabase(TestCase):
         result = client.post('/login', data={'email': 'andre@gmail.com',
                                              'password': 'andrepassword'},
                                             follow_redirects=True)
-        self.assertIn('<h2>Here is your user information:</h2>', result.data)
+        self.assertIn('Rate a restaurant', result.data)
+
+
 
 
 if __name__ == "__main__":
