@@ -154,13 +154,13 @@ def example_data():
 
     # Add sample employees and departments
 
-    spicy = Category(category_id='03', specialty='spicy', restaurant_id='01')
-    fancy = Category(category_id='04', specialty='fancy', restaurant_id='02')
+    spicy = Category(category_id='03', specialty='Spicy', restaurant_id='01')
+    fancy = Category(category_id='04', specialty='Fancy', restaurant_id='02')
 
     hippie_thai = Restaurant(restaurant_id='01', external_places_id='places_id', general_score='4.3', name='Hippie Thai', internal_places_id='internal_id', address='123 Haight St.')
     pettit_creen = Restaurant(restaurant_id='02', external_places_id='places_other_id', general_score='4.7', name='Pettit Creen', internal_places_id='other_internal_id', address='123 Market St.')
 
-    joana = User(fname='Joana', lname='Maria', email='joana@gmail.com', username='joanamaria', password='joanapassword')
+    joana = User(fname='Joana', lname='Maria', email='joana@gmail.com', username='joanamaria', password='joanapassword', user_type='vendor')
     andre = User(fname='Andre', lname='Falco', email='andre@gmail.com', username='andrefalco', password='andrepassword')
 
     db.session.add_all([hippie_thai, pettit_creen, spicy, fancy, joana, andre])

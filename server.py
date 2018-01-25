@@ -59,9 +59,7 @@ def send_sms():
         body= message
         )
 
-        flash("Your message was sent")
-
-        return redirect("/")
+        return render_template("message_sent.html", message=message)
 
     else:
         flash("You don't have autorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
@@ -282,7 +280,7 @@ def rate_a_restaurant():
 
     except KeyError:
         flash("You need to login in order to add a rating!")
-        return redirect("/") # need to see where this goes
+        return redirect("/")
 
 @app.route("/rating_results")
 def rating_results():
