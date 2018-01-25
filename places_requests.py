@@ -49,7 +49,7 @@ general_results = request_data_from_google_places('ChIJiwOc1iJ-j4ARmtSY2tM29G0')
 def save_requests_results():
     """Saves requests results."""
 
-    places_id_list = ['ChIJNTBFxKyAhYARXPtpITIjvIQ', 'ChIJx1ULhNCAhYARSRq9NDWTeqI'] #, 'ChIJxSa9TqKAhYAR4lqep-kTo8c', 'ChIJMZnCJCJ-j4ARN5S_0ANESiM', 'ChIJiwOc1iJ-j4ARmtSY2tM29G0', 'ChIJVVWVjGaAhYARH_4JjCTVBz8', 'ChIJYykKebmAhYAR0f6JEcUdIVs', 'ChIJU8wGk6aAhYARW4WqEGx2HNE', 'ChIJqzfjw6aAhYARyCQ9qVcoIU0', 'ChIJ30-kn0F-j4ARM4P0RtSVENA']
+    places_id_list = ['ChIJNTBFxKyAhYARXPtpITIjvIQ', 'ChIJx1ULhNCAhYARSRq9NDWTeqI', 'ChIJxSa9TqKAhYAR4lqep-kTo8c', 'ChIJMZnCJCJ-j4ARN5S_0ANESiM', 'ChIJiwOc1iJ-j4ARmtSY2tM29G0', 'ChIJVVWVjGaAhYARH_4JjCTVBz8', 'ChIJYykKebmAhYAR0f6JEcUdIVs', 'ChIJU8wGk6aAhYARW4WqEGx2HNE', 'ChIJqzfjw6aAhYARyCQ9qVcoIU0', 'ChIJ30-kn0F-j4ARM4P0RtSVENA']
 
     list_of_API_results = []
 
