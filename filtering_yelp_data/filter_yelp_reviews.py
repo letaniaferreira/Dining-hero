@@ -3,13 +3,27 @@ import csv
 import string
 import os
 
-def get_all_reviews_for_restaurant(dict):
-    """gets reviews from json returns reviews dictionary"""
+def read_restaurants_file(file):
+    """reads restaurants file and return restaurant dictionary
+    >>> read_restaurants_file('test_dict_rest_json.txt')
+    {u'BqsIt1BQKzS-hEKLYzBm7g': [u"Domino's Pizza", [u'Sandwiches', u'Pizza', u'Chicken Wings', u'Restaurants']], u'xsdRrNJuNumvrwoQ2Tt8tQ': [u'Chipotle Mexican Grill', [u'Mexican', u'Fast Food', u'Restaurants']], u'rnvsL0oFZpzpO61GXqBF6g': [u'Reign Of Thai', [u'Thai', u'Buffets', u'Salad', u'Seafood', u'Restaurants']], u'WfDB6grqF9-1bOAP505Lqg': [u'Pho Mi 99', [u'Vietnamese', u'Restaurants', u'Asian Fusion']]}
+    """
+    with open(file, 'r') as file:
+            data = file.read()
+            rest_data = json.loads(data)
+            
+                    
+    return rest_data
+
+def get_all_reviews_for_restaurant(dict, review_json):
+    """gets reviews from json restaurant dictionary and returns reviews dictionary
+    >>> get_all_reviews_for_restaurant(restaurants_dict, 'test_review.json')
+    {u'jQsNFOzDpxPmOurSWCg1vQ': [u'This place is horrible, we were so excited to try it since I got a gift card for my birthday. We went in an ordered are whole meal and they did not except are gift card, because their system was down. Unacceptable, this would have been so helpful if we would have known this prior!!']}"""
 
     reviews_dict = {}
     
 
-    for row in open('review.json'):
+    for row in open(review_json):
         row = row.rstrip()
         row = json.loads(row)
 
@@ -32,17 +46,9 @@ def get_all_reviews_for_restaurant(dict):
 
     return reviews_dict
 
-def read_restaurants(file):
-    """reads restaurants file"""
-    with open(file, 'r') as file:
-            data = file.read()
-            data = json.loads(data)
-            
-                    
-    return data
 
 def write_results_to_file(file, reviews):
-    """Writes result to file"""
+    """Writes reviews to file using different restaurant categories"""
 
     counter = 1
     max_file_size = 50
@@ -123,12 +129,12 @@ def clean_strings(lst):
         commaless_list.append(clean_review.replace(",", ""))
     return commaless_list
 
-
-print "Reading restaurants..."
-restaurants_dict = read_restaurants('yelp_dict_rest_json.txt')
-print "Getting reviews for restaurants..."
-reviews = get_all_reviews_for_restaurant(restaurants_dict)
-print "Opa!!! Writing to the file..."
-rest_file = write_results_to_file('results/classified_reviews', reviews)
+if __name__ == '__main__':
+    print "Reading restaurants..."
+    restaurants_dict = read_restaurants_file('yelp_dict_rest_json.txt')
+    print "Getting reviews for restaurants..."
+    reviews = get_all_reviews_for_restaurant(restaurants_dict, 'review.json')
+    print "Opa!!! Writing to the file..."
+    rest_file = write_results_to_file('results/classified_reviews', reviews)
 
 
