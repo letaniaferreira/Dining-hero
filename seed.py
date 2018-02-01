@@ -8,12 +8,12 @@ from sqlalchemy.ext.compiler import compiles # allows to run the compile_drop_ta
 
 @compiles(DropTable, "postgresql")
 def _compile_drop_table(element, compiler, **kwargs):
-    """drops tables in a PostgreSQL database that have
+    """Drops tables in a PostgreSQL database that have
     foreign key constraints and require DROP TABLE CASCADE"""
     return compiler.visit_drop_table(element) + " CASCADE"
 
 def open_file(file):
-    """read data from file and makes it json"""
+    """Reads data from file and makes it json"""
 
     with open(file, 'r') as file:
         data = file.read()
@@ -22,7 +22,7 @@ def open_file(file):
     return data
 
 def load_restaurants(data):
-    """Load restaurants from file into database."""
+    """Loads restaurants from file into database."""
 
     print "Restaurants"
 
@@ -45,15 +45,15 @@ def load_restaurants(data):
                                 address=address,
                                 restaurant_id=restaurant_id)
 
-        # We need to add to the session or it won't ever be stored
+        # adds to the session
         db.session.add(restaurant)
 
-        # Once we're done, we should commit our work
+        # commits work after done
         db.session.commit()
 
 
 def load_categories(data):
-    """Load categories from file into database."""
+    """Loads categories from file into database."""
 
     print "Categories"
 
@@ -74,7 +74,7 @@ def load_categories(data):
 
 
 def load_users(data):
-    """Load users from file into database."""
+    """Loads users from file into database."""
 
     print "Users"
 
@@ -109,7 +109,7 @@ def load_users(data):
     db.session.commit()    
 
 def load_ratings(data):
-    """Load ratings from data file into database."""
+    """Loads ratings from data file into database."""
 
     print "Ratings"
 
@@ -136,7 +136,7 @@ def load_ratings(data):
     db.session.commit()
 
 def load_days(data):
-    """Load days data into database."""
+    """Loads days data into database."""
 
     print "Days"
 
@@ -155,7 +155,7 @@ def load_days(data):
     db.session.commit()
 
 def load_hours(data):
-    """Load hours data into database."""
+    """Loads hours data into database."""
 
     print "Hours"
 
@@ -195,13 +195,13 @@ def load_hours(data):
 
 
 def set_val_user_id():
-    """Set value for the next user_id after seeding database"""
+    """Sets value for the next user_id after seeding database"""
 
-    # Get the Max user_id in the database
+    # Gets the Max user_id in the database
     result = db.session.query(func.max(User.user_id)).one()
     max_id = int(result[0])
 
-    # Set the value for the next user_id to be max_id + 1
+    # Sets the value for the next user_id to be max_id + 1
     query = "SELECT setval('users_user_id_seq', :new_id)"
     db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
@@ -215,7 +215,7 @@ if __name__=='__main__':
     #if table have not been created, create them
     db.create_all()
 
-# # calling the functions
+# calling the functions
     data_file = open_file('data_10_rest_json.txt')
     load_restaurants(data_file)
     load_categories(data_file)
