@@ -17,7 +17,8 @@ Libraries used:
 - Spacy
 
 API used:
-Google Places
+- Twilio
+- Google Places
 
 Dataset used:
 Yelp Open Dataset (4,700,000 reviews / 156,000 businesses)
