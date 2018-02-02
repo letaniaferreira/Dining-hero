@@ -170,10 +170,10 @@ def example_data():
 #Helper functions
 
 def connect_to_db(app, db_uri='postgresql:///dininghero'):
-    """Connect tthe database to the Flask app."""
+    """Connect the database to the Flask app."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri # I will call this database, which in this function is defauted to dininghero
-    app.config['SQLALCHEMY_ECHO'] = True # this line will print in the in the terminal
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri # I will call this database, which in this function is defaulted to dininghero
+    app.config['SQLALCHEMY_ECHO'] = True # this line will print in the terminal
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # this avoids silly error message from track modifications
     db.app = app
     db.init_app(app)

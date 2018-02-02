@@ -40,7 +40,7 @@ class FlaskTestsDatabase(TestCase):
         """Stuff to do before every test."""
 
         # Connect to test database
-        connect_to_db(app, "postgresql:///testdb")
+        connect_to_db(app, "postgresql:///testserverdb")
 
         # Create tables and add sample data
         db.create_all()

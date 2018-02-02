@@ -1,12 +1,73 @@
 import unittest
 import seed
+from server import app
+import model
+from sqlalchemy_utils import database_exists, create_database
+from unittest import TestCase
 
 class TestSeedMethods(unittest.TestCase):
+    """Tests simple Seed methods"""
 
-    def open_file(self):
-        assert seed.open_file('data_10_rest_json.txt') != None
+    def test_open_file(self):
+        """Tests open_file"""
+        output = seed.open_file('open_test.txt')
+        self.assertEquals('this is a test', output)
+
+class TestSeedUsingDatabase(TestCase):
+    """Tests Seed methods that use the database."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        seeddb = "postgresql:///testseeddb"
+
+        # check if db exists
+        if not database_exists(seeddb):
+
+            # if it does not exist, create it
+            create_database(seeddb)
+
+        # Connect to testseed database
+        model.connect_to_db(app, seeddb)
+
+        # Create tables
+        model.db.create_all()
+
+        #Add instance variable/attribute
+        self.test_data = seed.open_file('test_data_rest_json.txt')
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        model.db.session.close()
+        model.db.drop_all()
+
+
+    def test_load_restaurants(self):
+        """Tests load_restaurants"""
+
+        restaurant_name = 'Hippie Thai Street Food'
+
+        # Do some stuff we want to test
+        ## call load_restaurants with test data
+        seed.load_restaurants(self.test_data)
+
+        # Do what we need to get verification
+        ## find restaurant we expect to be in database based on test data
+        test_restaurant = model.Restaurant.query.filter_by(name=restaurant_name).first()
+        # Verify results
+        ## Assert that data is equal to what we expect
+        self.assertEquals(restaurant_name, test_restaurant.name)
+
+    def test_load_categories(self):
+        """Tests load_categories"""
+
+        seed.load_restaurants(self.test_data)
+        specialty = 'Thai'
+        seed.load_categories(self.test_data)
+        test_category = model.Category.query.filter_by(specialty=specialty).first()
+        self.assertEquals(specialty, test_category.specialty)
 
 
 if __name__ == "__main__":
-    # If called like a script, run our tests
     unittest.main()
