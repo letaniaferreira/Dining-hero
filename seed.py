@@ -38,6 +38,7 @@ def load_restaurants(data):
         internal_places_id = restaurant_info[4]
         address = restaurant_info[6]
 
+        # creates new restaurant instance
         restaurant = Restaurant(external_places_id=external_places_id,
                                 general_score=general_score,
                                 name=name,
@@ -45,7 +46,7 @@ def load_restaurants(data):
                                 address=address,
                                 restaurant_id=restaurant_id)
 
-        # adds to the session
+        # adds restaurant to the session
         db.session.add(restaurant)
 
         # commits work after done
