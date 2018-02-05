@@ -68,6 +68,24 @@ class TestSeedUsingDatabase(TestCase):
         test_category = model.Category.query.filter_by(specialty=specialty).first()
         self.assertEquals(specialty, test_category.specialty)
 
+    def test_load_users(self):
+        """Tests load_restaurants"""
+
+        user_fname = 'Felic'
+        seed.load_users(self.test_data)
+        test_user = model.User.query.filter_by(fname=user_fname).first()
+        self.assertEquals(user_fname, test_user.fname)
+
+    # def test_load_ratings(self):
+    #     """Tests load_ratings"""
+
+    #     reference_score = '4'
+    #     seed.load_ratings(self.test_data)
+    #     test_score = model.Rating.query.filter_by(score=reference_score).first()
+    #     self.assertEquals(eference_score, test_score.score)
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
