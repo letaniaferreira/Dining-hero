@@ -82,9 +82,15 @@ class TestSeedUsingDatabase(TestCase):
     #     reference_score = '4'
     #     seed.load_ratings(self.test_data)
     #     test_score = model.Rating.query.filter_by(score=reference_score).first()
-    #     self.assertEquals(eference_score, test_score.score)
+    #     self.assertEquals(reference_score, test_score.score)
 
+    # def test_load_days(self):
+    #     """Tests load_days"""
 
+    #     reference_day = 'Monday'
+    #     seed.load_days(self.test_data)
+    #     test_day = model.Day.query.filter_by(day=reference_day).first()
+    #     self.assertEquals(reference_day, test_day.day)
 
 
 if __name__ == "__main__":
