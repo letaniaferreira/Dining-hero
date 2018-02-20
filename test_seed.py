@@ -71,26 +71,38 @@ class TestSeedUsingDatabase(TestCase):
     def test_load_users(self):
         """Tests load_restaurants"""
 
-        user_fname = 'Felic'
+        user_name = 'Felic'
         seed.load_users(self.test_data)
-        test_user = model.User.query.filter_by(fname=user_fname).first()
-        self.assertEquals(user_fname, test_user.fname)
+        test_user = model.User.query.filter_by(fname=user_name).first()
+        self.assertEquals(user_name, test_user.fname)
 
-    # def test_load_ratings(self):
-    #     """Tests load_ratings"""
+    def test_load_ratings(self):
+        """Tests load_ratings"""
 
-    #     reference_score = '4'
-    #     seed.load_ratings(self.test_data)
-    #     test_score = model.Rating.query.filter_by(score=reference_score).first()
-    #     self.assertEquals(reference_score, test_score.score)
+        seed.load_restaurants(self.test_data)
+        seed.load_users(self.test_data)
+        reference_score = 4
+        seed.load_ratings(self.test_data)
+        test_score = model.Rating.query.filter_by(score=reference_score).first()
+        self.assertEquals(reference_score, test_score.score)
 
-    # def test_load_days(self):
-    #     """Tests load_days"""
+    def test_load_days(self):
+        """Tests load_days"""
 
-    #     reference_day = 'Monday'
-    #     seed.load_days(self.test_data)
-    #     test_day = model.Day.query.filter_by(day=reference_day).first()
-    #     self.assertEquals(reference_day, test_day.day)
+        reference_day = 'Monday'
+        seed.load_days(self.test_data)
+        test_day = model.Day.query.filter_by(day=reference_day).first()
+        self.assertEquals(reference_day, test_day.day)
+
+    def test_load_hours(self):
+        """Tests load_hours"""
+
+        seed.load_restaurants(self.test_data)
+        seed.load_days(self.test_data)
+        reference_hour = 'open_time: 11:00 AM'
+        seed.load_hours(self.test_data)
+        test_hour = model.Hour.query.filter_by(open_time=reference_hour).first()
+        self.assertEquals(reference_hour, test_hour.open_time)
 
 
 if __name__ == "__main__":
