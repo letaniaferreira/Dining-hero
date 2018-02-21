@@ -99,7 +99,7 @@ class TestSeedUsingDatabase(TestCase):
 
         seed.load_restaurants(self.test_data)
         seed.load_days(self.test_data)
-        reference_hour = 'open_time: 11:00 AM'
+        reference_hour = ' 11:00 AM'
         seed.load_hours(self.test_data)
         test_hour = model.Hour.query.filter_by(open_time=reference_hour).first()
         self.assertEquals(reference_hour, test_hour.open_time)
