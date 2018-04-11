@@ -1,5 +1,6 @@
 import json
 
+
 def separate_restaurant():
     """makes dictionary of restaurants using name and category"""
 
@@ -12,12 +13,11 @@ def separate_restaurant():
         restaurant_id = row['business_id']
         restaurant_name = row['name']
 
-       
         if "Restaurants" in categories_list:
-            dict_of_restaurant_ids[restaurant_id] =[restaurant_name, categories_list]
+            dict_of_restaurant_ids[restaurant_id] = [restaurant_name, categories_list]
 
-            
     return dict_of_restaurant_ids
+
 
 def write_results_to_file(file):
     """Writes requests result to file."""
@@ -27,5 +27,4 @@ def write_results_to_file(file):
 
 
 yelp_rest_info = separate_restaurant()
-rest_file = write_results_to_file('yelp_dict_rest_json.txt')
-
+write_results_to_file('yelp_dict_rest_json.txt')

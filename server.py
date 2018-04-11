@@ -1,39 +1,31 @@
 import os
-
 from flask import Flask, request, render_template, redirect, session, flash
-
 from jinja2 import StrictUndefined
-
 from flask_debugtoolbar import DebugToolbarExtension
-
 from twilio.rest import Client
-
 from model import User, Rating, Restaurant, Day, Hour, Category, connect_to_db, db
-
 app = Flask(__name__)
-
-app.secret_key = "ABC" # you always need to give your app a secrete key. No matter what key it is 
-
+app.secret_key = "ABC" # you always need to give your app a secret key. No matter what key it is
 # if you use an undefined variable in Jinja2, it fails
 # silently. Adding this line raises an error instead.
-
 app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
-#need this showing page to not get conflict with the get form
+
 def main_page(): 
     """Homepage"""
 
     return render_template('main_page.html')
 
-@app.route("/vendors")
+
+@app.route('/vendors')
 def vendors_page():
     """Renders information to vendors"""
 
     return render_template('vendors.html')
 
 
-@app.route("/sms", methods=['POST'])
+@app.route('/sms', methods=['POST'])
 def send_sms():
     """Allows admin and vendor to send promo sms."""
 
@@ -48,44 +40,47 @@ def send_sms():
 
     if user_type == 'admin' or user_type == 'vendor':
     
-        account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+        account_sid = os.environ['TWILIO_ACCOUNT_SID']
+        auth_token = os.environ['TWILIO_AUTH_TOKEN']
 
         client = Client(account_sid, auth_token)
 
         client.messages.create(
-        to=os.environ["MY_PHONE_NUMBER"], #substitute by list of users when updated from trial Twilio acc
-        from_=os.environ["MY_TWILIO_PHONE_NUMBER"],
-        body= message
+        to=os.environ['MY_PHONE_NUMBER'], #substitute by list of users when updated from trial Twilio acc
+        from_=os.environ['MY_TWILIO_PHONE_NUMBER'],
+        body=message
         )
 
-        return render_template("message_sent.html", message=message)
+        return render_template('message_sent.html', message=message)
 
     else:
         flash("You don't have autorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
-        return redirect("/")
+        return redirect('/')
 
 
-@app.route("/restaurants")
+@app.route('/restaurants')
 def list_of_restaurants():
     """Show list of restaurants."""
 
     restaurants = Restaurant.query.order_by('name').all()
-    return render_template("restaurants.html", restaurants=restaurants)
+    return render_template('restaurants.html', restaurants=restaurants)
 
-@app.route("/restaurants/<rest_id>")
+
+@app.route('/restaurants/<rest_id>')
 def restaurant_details(rest_id):
     """Shows each restaurant details."""
 
     restaurant = Restaurant.query.get(rest_id)
 
-    return render_template("restaurant_details.html", restaurant=restaurant)
+    return render_template('restaurant_details.html', restaurant=restaurant)
+
 
 @app.route('/advanced_search_form')
 def shows_user_form():
     """Allows user to perform advanced search"""
 
     return render_template('advanced_search.html')
+
 
 @app.route('/advanced_search')
 def user_form():
@@ -119,9 +114,9 @@ def user_form():
   
 
     if list_food_categories:
-        print "beginning of list of foods"
+        print 'beginning of list of foods'
         print list_food_categories
-        print "end list of food"
+        print 'end list of food'
         restaurants = []
         for category in list_food_categories:
             rest_id = category.restaurant_id
@@ -134,7 +129,7 @@ def user_form():
         flash("Oops! Couldn't find that. Please try something else!")
         return redirect('/')
     
-    # either change /results to advanced_results or make sure the results refresh
+        # either change /results to advanced_results or make sure the results refresh
         # return render_template('advanced_results.html') # need to create thi html
 
 @app.route('/show-login', methods=['GET'])
@@ -143,6 +138,7 @@ def show_login():
 
     return render_template('login.html')
 
+
 @app.route('/login')
 def login_form():
     """Shows login form."""
@@ -150,7 +146,7 @@ def login_form():
     return render_template('login.html')
 
 
-@app.route('/login', methods=['Post'])
+@app.route('/login', methods=['POST'])
 def login():
     """Alows user to login"""
 
@@ -164,11 +160,11 @@ def login():
 
         session['email'] = email
         session['user_type'] = user.user_type
-        flash("Login sucessful!")
+        flash('Login sucessful!')
 
         return redirect('/profile')
     else:
-        flash("Login failed. We could not find your email or password.")
+        flash('Login failed. We could not find your email or password.')
         return redirect('/login')
 
 
@@ -178,28 +174,30 @@ def registration_form():
 
     return render_template("registration_form.html")
 
-@app.route("/registration", methods=["POST"])
+
+@app.route('/registration', methods=['POST'])
 def confirm_registration():
     """Confirms registration"""
 
-    email = request.form.get("email")
-    password = request.form.get("password")
-    fname = request.form.get("fname")
-    username = request.form.get("username")
-    phone = request.form.get("phone")
+    email = request.form.get('email')
+    password = request.form.get('password')
+    fname = request.form.get('fname')
+    username = request.form.get('username')
+    phone = request.form.get('phone')
 
     duplicates = db.session.query(User).filter_by(email=email).all()
 
     if duplicates:
-        flash("This email is already registered. Please try again with a different email.")
+        flash('This email is already registered. Please try again with a different email.')
     else:
         new_user = User(email=email, password=password, fname=fname, username=username, phone=phone)
         db.session.add(new_user)
         db.session.commit()
-        flash("You have been registered!")
+        flash('You have been registered!')
         session['email'] = email
 
     return redirect('/profile') 
+
 
 @app.route('/profile')
 def show_profile():
@@ -218,10 +216,10 @@ def show_profile():
                 if len(favorite_spots) < 6:
                     favorite_spots.append(rating.restaurant)
 
-        return render_template("profile.html", favorite_spots=favorite_spots)
+        return render_template('profile.html', favorite_spots=favorite_spots)
 
     except KeyError:
-        flash("You need to login in to see your profile!")
+        flash('You need to login in to see your profile!')
         return redirect('/show-login')
         
 
@@ -232,7 +230,6 @@ def results():
     food_type = request.args.get('type_of_food')
     food_type = food_type.title()
 
-    
     list_food_categories = db.session.query(Category).filter_by(specialty=food_type).all()
 
     if list_food_categories:
@@ -241,7 +238,6 @@ def results():
             rest_id = category.restaurant_id
             restaurants.append(Restaurant.query.get(rest_id))
 
-
         return render_template('results.html', restaurants=restaurants)
 
     else:
@@ -249,13 +245,13 @@ def results():
         return redirect('/')
 
 
-@app.route("/rating", methods=["POST"])
+@app.route('/rating', methods=['POST'])
 def rate_a_restaurant():
     """Rating for a restaurant"""
 
-    restaurant_id = request.form.get("restaurant")
-    user_review = request.form.get("user_review")
-    score = request.form.get("score")
+    restaurant_id = request.form.get('restaurant')
+    user_review = request.form.get('user_review')
+    score = request.form.get('score')
     restaurant = Restaurant.query.get(restaurant_id)
 
     try:
@@ -267,22 +263,23 @@ def rate_a_restaurant():
         if rating:
             rating.score = score
             db.session.commit()
-            flash("You changed the rating for " + restaurant.name + " . The new score is " + score + ".")
-            return redirect("/rating_results")
+            flash('You changed the rating for ' + restaurant.name + '' . The new score is '' + score + '.')
+            return redirect('/rating_results')
 
         else:
         
             new_rating = Rating(restaurant_id=restaurant_id, user_id=user_id, score=score, user_review=user_review)
             db.session.add(new_rating)
             db.session.commit()
-            flash("You gave " + score + " stars to " + restaurant.name)
-            return redirect("/rating_results")
+            flash('You gave ' + score + ' stars to ' + restaurant.name)
+            return redirect('/rating_results')
 
     except KeyError:
-        flash("You need to login in order to add a rating!")
-        return redirect("/")
+        flash('You need to login in order to add a rating!')
+        return redirect('/')
 
-@app.route("/rating_results")
+
+@app.route('/rating_results')
 def rating_results():
     """Show rating results"""
 
@@ -290,7 +287,7 @@ def rating_results():
     return render_template("rating_results.html", restaurants=restaurants)
 
 
-@app.route("/rated")
+@app.route('/rated')
 def show_favorite_restaurants():
     """Show favorite restaurants"""
 
@@ -304,9 +301,8 @@ def show_favorite_restaurants():
   
     rated_restaurants = user.rating #this is a list
 
+    return render_template('rated_restaurants.html', rated_restaurants=rated_restaurants)
 
-        
-    return render_template("rated_restaurants.html", rated_restaurants=rated_restaurants)
 
 @app.route('/favorite_spots')
 def show_restaurants_rated_five():
@@ -325,21 +321,22 @@ def show_restaurants_rated_five():
                 if len(favorite_spots) < 6:
                     favorite_spots.append(rating.restaurant)
 
-        return render_template("favorite_spots.html", favorite_spots=favorite_spots)
+        return render_template('favorite_spots.html', favorite_spots=favorite_spots)
 
     except KeyError:
-        flash("You need to be logged in to see your favorite spots!")
+        flash('You need to be logged in to see your favorite spots!')
         return redirect('/show-login')
 
-@app.route("/logout")
+
+@app.route('/logout')
 def log_out():
     """Logs the user out"""
 
     del session['email']
     session.clear()
-    flash("You are logged out!")
+    flash('You are logged out!')
 
-    return redirect("/")
+    return redirect('/')
 
 
 if __name__ == "__main__":
