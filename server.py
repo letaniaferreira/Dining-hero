@@ -36,7 +36,7 @@ def send_sms():
 
     user = User.query.filter_by(email=email).first()
     user_type = user.user_type
-    print user_type
+    print (user_type)
 
     if user_type == 'admin' or user_type == 'vendor':
     
@@ -114,9 +114,9 @@ def user_form():
   
 
     if list_food_categories:
-        print 'beginning of list of foods'
-        print list_food_categories
-        print 'end list of food'
+        print ('beginning of list of foods')
+        print (list_food_categories)
+        print ('end list of food')
         restaurants = []
         for category in list_food_categories:
             rest_id = category.restaurant_id
@@ -263,7 +263,7 @@ def rate_a_restaurant():
         if rating:
             rating.score = score
             db.session.commit()
-            flash('You changed the rating for ' + restaurant.name + '' . The new score is '' + score + '.')
+            flash('You changed the rating for ' + restaurant.name + ' . The new score is ' + score + '.')
             return redirect('/rating_results')
 
         else:
