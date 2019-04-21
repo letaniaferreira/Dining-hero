@@ -184,4 +184,4 @@ if __name__ == '__main__':
     app.debug = True
     from server import app #I do need to import app for this to run
     connect_to_db(app)
-    print "Connected to DB."
+    print("Connected to DB.")

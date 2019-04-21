@@ -4,13 +4,15 @@ from server import app
 import json
 
 from sqlalchemy.schema import DropTable
-from sqlalchemy.ext.compiler import compiles # allows to run the compile_drop_table function
+from sqlalchemy.ext.compiler import compiles  # allows to run the compile_drop_table function
+
 
 @compiles(DropTable, "postgresql")
 def _compile_drop_table(element, compiler, **kwargs):
     """Drops tables in a PostgreSQL database that have
     foreign key constraints and require DROP TABLE CASCADE"""
     return compiler.visit_drop_table(element) + " CASCADE"
+
 
 def open_file(file):
     """Reads data from file and makes it json"""
@@ -21,10 +23,11 @@ def open_file(file):
 
     return data
 
+
 def load_restaurants(data):
     """Loads restaurants from file into database."""
 
-    print "Restaurants"
+    print("Restaurants")
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
@@ -56,7 +59,7 @@ def load_restaurants(data):
 def load_categories(data):
     """Loads categories from file into database."""
 
-    print "Categories"
+    print("Categories")
 
     Category.query.delete()
 
@@ -64,12 +67,12 @@ def load_categories(data):
         restaurant_id = restaurant_info[1]
         special_features = restaurant_info[8]
         for special in special_features:
-#there is repetition in the categories as of right now, but categories have been added
+            # there is repetition in the categories as of right now, but categories have been added
 
             category = Category(specialty=special,
                                 restaurant_id=restaurant_id)
 
-            db.session.add(category) 
+            db.session.add(category)
 
         db.session.commit()
 
@@ -77,7 +80,7 @@ def load_categories(data):
 def load_users(data):
     """Loads users from file into database."""
 
-    print "Users"
+    print("Users")
 
     User.query.delete()
 
@@ -107,18 +110,19 @@ def load_users(data):
 
                     db.session.add(user)
 
-    db.session.commit()    
+    db.session.commit()
+
 
 def load_ratings(data):
     """Loads ratings from data file into database."""
 
-    print "Ratings"
+    print("Ratings")
 
     Rating.query.delete()
 
     for restaurant_info in data:
         restaurant_id = restaurant_info[1]
-        reviews_dictionary = restaurant_info[5] 
+        reviews_dictionary = restaurant_info[5]
         for key, value in reviews_dictionary.items():
             if reviews_dictionary[key] != []:
                 user_information = reviews_dictionary[key]
@@ -126,7 +130,7 @@ def load_ratings(data):
                 for user_info in user_information:
                     user_review = user_info['user_review']
                     user_id = user_info['user_id']
-                    
+
                     rating = Rating(score=score,
                                     user_review=user_review,
                                     user_id=user_id,
@@ -136,17 +140,18 @@ def load_ratings(data):
 
     db.session.commit()
 
+
 def load_days(data):
     """Loads days data into database."""
 
-    print "Days"
+    print("Days")
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
     Day.query.delete()
 
-    days = [("Mo","Monday"), ("Tu", "Tuesday"), ("We", "Wednesday"),
-     ("Th", "Thursday"), ("Fr", "Friday"), ("Sa", "Saturday"), ("Su", "Sunday")]
+    days = [("Mo", "Monday"), ("Tu", "Tuesday"), ("We", "Wednesday"),
+            ("Th", "Thursday"), ("Fr", "Friday"), ("Sa", "Saturday"), ("Su", "Sunday")]
     for week_day in days:
         day = week_day[1]
         day = Day(day=day)
@@ -155,10 +160,11 @@ def load_days(data):
 
     db.session.commit()
 
+
 def load_hours(data):
     """Loads hours data into database."""
 
-    print "Hours"
+    print("Hours")
 
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
@@ -175,20 +181,19 @@ def load_hours(data):
                     open_time = days[1] + ":" + days[2][:5]
                     closing_time = days[2][-2:] + ":" + days[3][:-3]
 
-
-                    hour = Hour(open_time=open_time, 
-                                closing_time=closing_time, 
+                    hour = Hour(open_time=open_time,
+                                closing_time=closing_time,
                                 restaurant_id=restaurant_id,
                                 day_id=week_day)
-        
+
                     db.session.add(hour)
 
                     if len(days) > 4:
                         open_time = days[3][-1:] + ":" + days[4] + ":" + days[5]
 
                         hour = Hour(open_time=open_time,
-                            restaurant_id=restaurant_id,
-                            day_id=week_day)
+                                    restaurant_id=restaurant_id,
+                                    day_id=week_day)
 
                         db.session.add(hour)
 
@@ -208,15 +213,15 @@ def set_val_user_id():
     db.session.commit()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     connect_to_db(app)
 
     db.drop_all()
-    
-    #if table have not been created, create them
+
+    # if table have not been created, create them
     db.create_all()
 
-# calling the functions
+    # calling the functions
     data_file = open_file('data_10_rest_json.txt')
     load_restaurants(data_file)
     load_categories(data_file)

@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, redirect, session, flash
 from jinja2 import StrictUndefined
-from flask_debugtoolbar import DebugToolbarExtension
+#from flask_debugtoolbar import DebugToolbarExtension
 from twilio.rest import Client
 from model import User, Rating, Restaurant, Day, Hour, Category, connect_to_db, db
 app = Flask(__name__)
