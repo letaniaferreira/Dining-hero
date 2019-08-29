@@ -185,10 +185,15 @@ def confirm_registration():
     username = request.form.get('username')
     phone = request.form.get('phone')
 
+    if not email or not password or not fname or not username or not phone:
+        flash('All fields are required!')
+        return redirect('/registration')
+
     duplicates = db.session.query(User).filter_by(email=email).all()
 
     if duplicates:
         flash('This email is already registered. Please try again with a different email.')
+        return redirect('/registration')
     else:
         new_user = User(email=email, password=password, fname=fname, username=username, phone=phone)
         db.session.add(new_user)
