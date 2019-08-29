@@ -17,6 +17,12 @@ def main_page():
 
     return render_template('main_page.html')
 
+@app.route('/vendors_registration')
+def vendors_registration_information():
+    """Renders information to vendors about site registration"""
+
+    return render_template('vendors_registration.html')
+
 
 @app.route('/vendors')
 def vendors_page():
