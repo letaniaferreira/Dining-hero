@@ -60,7 +60,7 @@ class User(db.Model):
                         autoincrement=True)
     fname = db.Column(db.String(15), nullable=True, unique=False)
     lname = db.Column(db.String(15), nullable=True, unique=False)
-    email = db.Column(db.String(20), nullable=False, unique=False)
+    email = db.Column(db.String(30), nullable=False, unique=False)
     username = db.Column(db.String(15), nullable=False, unique=True)
     password = db.Column(db.String(15), nullable=False, unique=False)
     phone = db.Column(db.String(12), nullable=True, unique=True)
