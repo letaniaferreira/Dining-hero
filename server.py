@@ -42,7 +42,6 @@ def send_sms():
 
     user = User.query.filter_by(email=email).first()
     user_type = user.user_type
-    print (user_type)
 
     if user_type == 'admin' or user_type == 'vendor':
     
@@ -60,7 +59,7 @@ def send_sms():
         return render_template('message_sent.html', message=message)
 
     else:
-        flash("You don't have autorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
+        flash("You don't have authorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
         return redirect('/')
 
 
