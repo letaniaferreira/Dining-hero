@@ -37,8 +37,11 @@ def send_sms():
 
     message = request.form.get('message')
     
-   
-    email = session['email']
+    try:
+        email = session['email']
+    except KeyError:
+        flash("You don't have authorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
+        return redirect('/')
 
     user = User.query.filter_by(email=email).first()
     user_type = user.user_type
