@@ -37,7 +37,7 @@ class FlaskTestsDatabase(TestCase):
     """Flask tests that use the database."""
 
     def setUp(self):
-        """Stuff to do before every test."""
+        """Do before every test."""
 
         # Connect to test database
         connect_to_db(app, "postgresql:///testserverdb")
