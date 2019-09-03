@@ -3,7 +3,7 @@ web app that makes dining suggestions and allows for advanced searching based on
 Tried to implement a restaurant classifier using the MonkeyLearn Platform based on restaurant reviews but accuracy rates are not as desired and classifier was not used on web app. The app has a special field for vendors to send message to subscribers using Twilio API.
  
 Technologies used:
-- Python 2.7
+- Python 3
 - Flask
 - Postgres
 - SQLAlchemy
