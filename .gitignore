@@ -1,2 +1,4 @@
 env/
 secrets.sh
+places_requests.py
+part_of_speech_tag.py
