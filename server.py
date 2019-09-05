@@ -43,8 +43,8 @@ def send_sms():
     try:
         email = session['email']
     except KeyError:
-        rollbar.report_message('You dont have authorization to send promo sms', 'warning')
-        flash("You don't have authorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
+        rollbar.report_exc_info()
+        flash("You need to login to send a promo sms.")
         return redirect('/')
 
     user = User.query.filter_by(email=email).first()
@@ -66,6 +66,7 @@ def send_sms():
         return render_template('message_sent.html', message=message)
 
     else:
+        rollbar.report_message('You dont have authorization to send promo sms', 'warning')
         flash("You don't have authorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
         return redirect('/')
 
@@ -176,6 +177,7 @@ def login():
 
         return redirect('/profile')
     else:
+        rollbar.report_message('Login failed', 'warning')
         flash('Login failed. We could not find your email or password.')
         return redirect('/login')
 
@@ -198,6 +200,7 @@ def confirm_registration():
     phone = request.form.get('phone')
 
     if not email or not password or not fname or not username or not phone:
+        rollbar.report_message('All fields are required!', 'warning')
         flash('All fields are required!')
         return redirect('/registration')
 
@@ -236,6 +239,7 @@ def show_profile():
         return render_template('profile.html', favorite_spots=favorite_spots)
 
     except KeyError:
+        rollbar.report_exc_info()
         flash('You need to login in to see your profile!')
         return redirect('/show-login')
         
@@ -292,6 +296,7 @@ def rate_a_restaurant():
             return redirect('/rating_results')
 
     except KeyError:
+        rollbar.report_exc_info()
         flash('You need to login in order to add a rating!')
         return redirect('/')
 
@@ -341,6 +346,7 @@ def show_restaurants_rated_five():
         return render_template('favorite_spots.html', favorite_spots=favorite_spots)
 
     except KeyError:
+        rollbar.report_exc_info()
         flash('You need to be logged in to see your favorite spots!')
         return redirect('/show-login')
 
