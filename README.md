@@ -10,6 +10,7 @@ Technologies used:
 - HTML
 - Jinja
 - Bootstrap
+- Rollbar
 
 Libraries used:
 - Requests
