@@ -9,6 +9,9 @@ app.secret_key = "ABC" # you always need to give your app a secret key. No matte
 # if you use an undefined variable in Jinja2, it fails
 # silently. Adding this line raises an error instead.
 app.jinja_env.undefined = StrictUndefined
+import rollbar
+rollbar_token = os.environ['ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN']
+rollbar.init(rollbar_token, 'production') 
 
 @app.route('/')
 
@@ -40,6 +43,7 @@ def send_sms():
     try:
         email = session['email']
     except KeyError:
+        rollbar.report_message('You dont have authorization to send promo sms', 'warning')
         flash("You don't have authorization to send promo sms. If you are an admin or a vendor please contact us to request autorization.")
         return redirect('/')
 
