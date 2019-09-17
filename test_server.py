@@ -15,7 +15,7 @@ class TestServerIntegration(unittest.TestCase):
         self.assertIn('What are you in the mood for?', result.data)
 
     def test_shows_user_form(self):
-        """Tests adavnced search route"""
+        """Tests advanced search route"""
         client = server.app.test_client()
         result = client.get('/advanced_search_form')
         self.assertIn('What are you looking for today?', result.data)
